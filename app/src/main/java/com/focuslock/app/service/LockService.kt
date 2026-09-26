@@ -2,6 +2,9 @@ package com.focuslock.app.service
 
 import android.app.Service
 import android.content.Intent
+import android.content.IntentFilter
+import android.content.Context
+import android.content.BroadcastReceiver
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
@@ -47,9 +50,40 @@ class LockService : Service() {
     private var loop: Job? = null
     private var warnedAccessibility = false
 
+    /**
+     * 屏幕亮起 / 用户解锁时，把锁屏界面顶到最前面。
+     *
+     * 为什么需要它：修掉「屏幕常亮」之后，手机能正常息屏了，但屏幕重新亮起时
+     * 系统会先显示它自己的锁屏（就是那张带通知预览的界面），我的锁机界面被压在
+     * 后面 —— 观感上就是「锁机好像没生效，点了也没反应」。
+     * 这里在亮屏和解锁的瞬间把锁机界面重新拉到前台，把它盖回系统锁屏之上。
+     *
+     * 注意：ACTION_SCREEN_ON / ACTION_USER_PRESENT 只能动态注册，不能写进清单。
+     */
+    private val screenStateReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (!LockRuntime.isLocked) return
+            when (intent?.action) {
+                Intent.ACTION_SCREEN_ON, Intent.ACTION_USER_PRESENT -> {
+                    Log.i(TAG, "屏幕亮起 / 解锁，把锁屏顶回前台")
+                    LockController.launchLockUi(this@LockService)
+                }
+            }
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
         Notifications.ensureChannels(this)
+        runCatching {
+            registerReceiver(
+                screenStateReceiver,
+                IntentFilter().apply {
+                    addAction(Intent.ACTION_SCREEN_ON)
+                    addAction(Intent.ACTION_USER_PRESENT)
+                }
+            )
+        }
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -138,6 +172,7 @@ class LockService : Service() {
     }
 
     override fun onDestroy() {
+        runCatching { unregisterReceiver(screenStateReceiver) }
         scope.cancel()
         super.onDestroy()
     }
