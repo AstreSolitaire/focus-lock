@@ -95,10 +95,33 @@ object Prefs {
         get() = safeSp()?.getBoolean(KEY_STRICT_SETTINGS, true) ?: true
         set(v) { safeSp()?.edit()?.putBoolean(KEY_STRICT_SETTINGS, v)?.apply() }
 
-    /** 严格模式下是否屏蔽下拉通知栏（长按电源键会有 8 秒宽限期） */
-    var strictBlockShade: Boolean
-        get() = safeSp()?.getBoolean(KEY_STRICT_SHADE, true) ?: true
-        set(v) { safeSp()?.edit()?.putBoolean(KEY_STRICT_SHADE, v)?.apply() }
+    /**
+     * 严格模式下是否屏蔽本机 AI 助手（小布 / Google 助手等）。
+     *
+     * 默认 **关**。一开始我把它默认打开，结果在这台一加 Ace 6 上踩了坑：
+     * 长按电源键被系统映射成「唤起小布助手」，助手一被拦，长按电源键就毫无反应，
+     * 用户会以为电源键坏了、没法关机。
+     *
+     * 而且助手其实**绕不过锁机** —— 它只能替你打开应用，而任何非白名单应用
+     * 照样会被前台拦截弹回。所以拦它的收益很小、代价却很大。
+     */
+    var strictBlockAssistant: Boolean
+        get() = safeSp()?.getBoolean(KEY_STRICT_ASSISTANT, false) ?: false
+        set(v) { safeSp()?.edit()?.putBoolean(KEY_STRICT_ASSISTANT, v)?.apply() }
+
+    /**
+     * 严格模式下是否屏蔽 SystemUI（也就是下拉通知栏）。
+     *
+     * 默认 **关**。打开它确实能挡住通知栏，但 SystemUI 同时负责画电源菜单，
+     * 而电源键不会派发给无障碍服务、开不了宽限期 —— 拦了就真的没法关机重启。
+     * 所以做成显式选项，由用户自己权衡。
+     *
+     * 换了新的键名（原来叫 strict_block_shade）：老版本默认是开的，
+     * 必须让已安装的用户也拿到修复，不能被旧的存储值继续坑着。
+     */
+    var strictBlockSystemUi: Boolean
+        get() = safeSp()?.getBoolean(KEY_STRICT_SYSTEMUI, false) ?: false
+        set(v) { safeSp()?.edit()?.putBoolean(KEY_STRICT_SYSTEMUI, v)?.apply() }
 
     /** 锁机期间通过设备管理员阻止卸载 */
     var blockUninstall: Boolean
@@ -270,7 +293,8 @@ object Prefs {
     private const val KEY_QUOTE = "lock_quote"
     private const val KEY_FLOAT_CLOCK = "floating_clock"
     private const val KEY_STRICT_SETTINGS = "strict_block_settings"
-    private const val KEY_STRICT_SHADE = "strict_block_shade"
+    private const val KEY_STRICT_SYSTEMUI = "strict_block_systemui"
+    private const val KEY_STRICT_ASSISTANT = "strict_block_assistant"
     private const val KEY_BLOCK_UNINSTALL = "block_uninstall"
     private const val KEY_LOCK_SCREEN = "lock_screen_on_start"
     private const val KEY_VIBRATE = "vibrate"

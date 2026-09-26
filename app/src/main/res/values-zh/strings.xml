@@ -192,8 +192,10 @@
     <string name="set_strict_rules_desc">只有「严格模式」的计划才会应用以下限制</string>
     <string name="set_strict_settings">屏蔽「系统设置」</string>
     <string name="set_strict_settings_desc">防止在锁机期间关闭无障碍、修改系统时间或强行停止本应用</string>
-    <string name="set_strict_shade">屏蔽下拉通知栏</string>
-    <string name="set_strict_shade_desc">长按电源键会有 8 秒宽限期，保证能正常关机 / 重启</string>
+    <string name="set_strict_shade">屏蔽下拉通知栏（可能导致无法关机）</string>
+    <string name="set_strict_shade_desc">系统电源菜单由「系统界面」绘制，屏蔽通知栏会连电源菜单一起挡掉，长按电源键可能没有反应、无法关机或重启。保持关闭。</string>
+    <string name="set_strict_assistant">屏蔽本机 AI 助手</string>
+    <string name="set_strict_assistant_desc">默认关闭。很多机型把长按电源键设成唤起助手，屏蔽它会让电源键看起来完全失效。而且助手绕不过锁机——它替你打开的应用照样会被弹回。</string>
     <string name="set_block_uninstall">锁机期间阻止卸载</string>
     <string name="set_block_uninstall_on">已生效（需设备管理员权限）</string>
     <string name="set_block_uninstall_off">需要先授予设备管理员权限</string>

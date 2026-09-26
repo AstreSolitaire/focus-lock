@@ -217,8 +217,15 @@ fun SettingsScreen(vm: AppViewModel) {
                 SwitchRow(
                     title = stringResource(R.string.set_strict_shade),
                     subtitle = stringResource(R.string.set_strict_shade_desc),
-                    checked = vm.strictBlockShade,
-                    onCheckedChange = { vm.updateStrictBlockShade(it) }
+                    checked = vm.strictBlockSystemUi,
+                    onCheckedChange = { vm.updateStrictBlockSystemUi(it) }
+                )
+                ThinDivider()
+                SwitchRow(
+                    title = stringResource(R.string.set_strict_assistant),
+                    subtitle = stringResource(R.string.set_strict_assistant_desc),
+                    checked = vm.strictBlockAssistant,
+                    onCheckedChange = { vm.updateStrictBlockAssistant(it) }
                 )
                 ThinDivider()
                 SwitchRow(

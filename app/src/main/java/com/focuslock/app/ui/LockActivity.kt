@@ -29,14 +29,24 @@ import com.focuslock.app.ui.theme.FocusLockTheme
 class LockActivity : AppCompatActivity() {
 
     companion object {
-        fun intent(ctx: Context): Intent =
-            Intent(ctx, LockActivity::class.java).addFlags(
-                Intent.FLAG_ACTIVITY_NEW_TASK or
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                    Intent.FLAG_ACTIVITY_SINGLE_TOP or
-                    Intent.FLAG_ACTIVITY_NO_ANIMATION or
-                    Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-            )
+        private const val EXTRA_TURN_ON_SCREEN = "turn_on_screen"
+
+        /**
+         * [turnOnScreen] 只在「锁机刚开始、需要主动把用户叫醒」时为 true。
+         *
+         * 无障碍服务把锁屏顶回前台时**绝不能**点亮屏幕 —— 否则用户按电源键熄屏后
+         * 会被反复点亮，表现出来就是「锁机期间没法息屏」。
+         */
+        fun intent(ctx: Context, turnOnScreen: Boolean = false): Intent =
+            Intent(ctx, LockActivity::class.java)
+                .putExtra(EXTRA_TURN_ON_SCREEN, turnOnScreen)
+                .addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK or
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP or
+                        Intent.FLAG_ACTIVITY_NO_ANIMATION or
+                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+                )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,18 +57,21 @@ class LockActivity : AppCompatActivity() {
             return
         }
 
-        // 显示在系统锁屏之上；到点自动亮屏
+        // 显示在系统锁屏之上；只有锁机刚启动那一次才顺带点亮屏幕
+        val turnOn = intent?.getBooleanExtra(EXTRA_TURN_ON_SCREEN, false) == true
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
-            setTurnScreenOn(true)
+            setTurnScreenOn(turnOn)
         } else {
             @Suppress("DEPRECATION")
-            window.addFlags(
-                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
-                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-            )
+            window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+            if (turnOn) {
+                @Suppress("DEPRECATION")
+                window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+            }
         }
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        // 刻意不加 FLAG_KEEP_SCREEN_ON：锁机界面不该阻止屏幕自动熄灭。
+        // 用户不碰手机时屏幕就该按系统超时正常黑掉，锁机照常计时。
         WindowCompat.setDecorFitsSystemWindows(window, false)
         hideSystemBars()
 

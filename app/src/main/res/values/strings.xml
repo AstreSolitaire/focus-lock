@@ -197,8 +197,10 @@
     <string name="set_strict_rules_desc">These restrictions only apply to schedules with Strict mode enabled</string>
     <string name="set_strict_settings">Block System Settings</string>
     <string name="set_strict_settings_desc">Stops accessibility being turned off, the clock being changed, or the app being force-stopped mid-session</string>
-    <string name="set_strict_shade">Block the notification shade</string>
-    <string name="set_strict_shade_desc">Long-pressing power still gives an 8-second grace period, so shutdown and reboot work normally</string>
+    <string name="set_strict_shade">Block the notification shade (may break shutdown)</string>
+    <string name="set_strict_shade_desc">The system power menu is drawn by SystemUI, so blocking the shade blocks it too — you may be unable to power off or reboot. Leave this off.</string>
+    <string name="set_strict_assistant">Block the built-in AI assistant</string>
+    <string name="set_strict_assistant_desc">Off by default. Many phones map a long-press of the power button to the assistant, so blocking it makes the power button appear dead. The assistant cannot bypass the lock anyway \u2014 anything it opens gets bounced back.</string>
     <string name="set_block_uninstall">Prevent uninstall during a lock</string>
     <string name="set_block_uninstall_on">Active (requires device admin)</string>
     <string name="set_block_uninstall_off">Needs device-admin permission first</string>

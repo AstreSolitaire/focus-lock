@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.SystemClock
+import android.provider.Settings
 import android.util.Log
 import com.focuslock.app.data.LockSession
 import com.focuslock.app.data.LockWindow
@@ -141,7 +142,8 @@ object LockController {
         AlarmScheduler.scheduleEnd(ctx, now + dur)
         AlarmScheduler.scheduleWatchdog(ctx)
         ServiceLauncher.startLockService(ctx)
-        launchLockUi(ctx)
+        // 锁机刚启动，主动亮屏让用户看到（也只在这一次亮）
+        launchLockUi(ctx, turnOnScreen = true)
         applyUninstallBlock(ctx, w.strict)
         if (w.strict && Prefs.lockScreenOnStart) FocusAdmin.lockNow(ctx)
         if (Prefs.vibrate) Haptics.pulse(ctx, longArrayOf(0, 60, 80, 60))
@@ -292,10 +294,18 @@ object LockController {
     fun isAllowed(pkg: String): Boolean {
         val s = LockRuntime.session ?: return true
         if (pkg == "com.android.systemui") {
-            return !(s.strict && Prefs.strictBlockShade)
+            // 电源菜单是 SystemUI 画的。拦 SystemUI 等于禁止关机 / 重启，
+            // 而电源键又不会派发给无障碍服务（拿不到，也就没法开宽限期），
+            // 所以这里默认一律放行，只在用户显式打开那个开关时才拦。
+            return !(s.strict && Prefs.strictBlockSystemUi)
         }
         if (pkg == SETTINGS_PACKAGE || pkg == SETTINGS_PACKAGE_ALT) {
             return !(s.strict && Prefs.strictBlockSettings)
+        }
+        // 助手默认放行：长按电源键在不少机型上被映射成唤起它，
+        // 拦掉会让电源键看起来彻底失效。它本身也绕不过锁机。
+        if (!Prefs.strictBlockAssistant && ASSISTANT_PREFIXES.any { pkg.startsWith(it) }) {
+            return true
         }
         return pkg in LockRuntime.allowedPackages
     }
@@ -307,8 +317,19 @@ object LockController {
      * 再让助手替你打开微信或系统设置。电源键本身绝不能拦（否则没法关机），
      * 所以只能在这一层把助手堵死；桌面同理，否则按 Home 就跑了。
      */
-    private val NEVER_ALLOWED_PREFIXES = listOf(
-        // 一加 / OPPO 的小布助手及其语音、场景服务
+    private val LAUNCHER_PREFIXES = listOf(
+        "com.android.launcher",
+        "com.oplus.launcher",
+        "com.oppo.launcher",
+        "com.coloros.launcher"
+    )
+
+    /**
+     * 本机 AI 助手。默认**不拦** —— 很多机型（含一加 Ace 6）把长按电源键映射成
+     * 唤起助手，拦掉它会让电源键看起来完全失效。而且助手也绕不过锁机：
+     * 它替你打开的应用照样会被前台拦截弹回。想拦就在设置里打开那个开关。
+     */
+    private val ASSISTANT_PREFIXES = listOf(
         "com.coloros.assistantscreen",
         "com.coloros.speechassist",
         "com.heytap.speechassist",
@@ -317,20 +338,18 @@ object LockController {
         "com.coloros.ocs",
         "com.oplus.smartengine",
         "com.oplus.pantanal",
-        // Google 助手
         "com.google.android.googlequicksearchbox",
-        "com.google.android.apps.googleassistant",
-        // 各家桌面（按 Home 键的落点）
-        "com.android.launcher",
-        "com.oplus.launcher",
-        "com.oppo.launcher",
-        "com.coloros.launcher"
+        "com.google.android.apps.googleassistant"
     )
 
     fun isNeverAllowed(pkg: String): Boolean {
-        if (NEVER_ALLOWED_PREFIXES.any { pkg.startsWith(it) }) return true
+        // 桌面必须永远拦住，否则按 Home 就跑了
+        if (LAUNCHER_PREFIXES.any { pkg.startsWith(it) }) return true
         val launcher = LockRuntime.defaultLauncher
-        return launcher != null && pkg == launcher
+        if (launcher != null && pkg == launcher) return true
+        // 助手只在用户显式要求时才拦
+        if (Prefs.strictBlockAssistant && ASSISTANT_PREFIXES.any { pkg.startsWith(it) }) return true
+        return false
     }
 
     /**
@@ -362,16 +381,31 @@ object LockController {
         }
     }
 
-    /** 把锁屏界面拉到最前 */
-    fun launchLockUi(ctx: Context) {
+    /**
+     * 把锁屏界面拉到最前。
+     *
+     * [turnOnScreen] 默认为 false：拦截时只是把界面顶回来，绝不能点亮屏幕，
+     * 否则用户按电源键息屏会被立刻打断。
+     */
+    fun launchLockUi(ctx: Context, turnOnScreen: Boolean = false) {
         if (!LockRuntime.isLocked) return
         val now = System.currentTimeMillis()
         if (now - LockRuntime.lastForceShowAt < 250L) return
         LockRuntime.lastForceShowAt = now
         try {
-            ctx.startActivity(LockActivity.intent(ctx))
+            ctx.startActivity(LockActivity.intent(ctx, turnOnScreen))
         } catch (t: Throwable) {
             Log.w(TAG, "直接拉起锁屏失败，改用全屏通知", t)
+            Notifications.notifyFullScreenFallback(ctx)
+            return
+        }
+
+        // 关键：系统拦截后台启动界面时是**静默**的 —— 只记一条日志，不抛异常，
+        // 所以上面的 catch 永远不会触发，兜底通知也就发不出去。
+        // 没有悬浮窗权限时后台弹界面必然被拦，这里主动补一条全屏通知，
+        // 至少让用户能点回来，也让「权限没给全」这件事可见。
+        if (!Settings.canDrawOverlays(ctx)) {
+            Log.w(TAG, "缺少悬浮窗权限，后台弹界面会被静默拦截，改用全屏通知兜底")
             Notifications.notifyFullScreenFallback(ctx)
         }
     }

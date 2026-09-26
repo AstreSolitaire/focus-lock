@@ -69,7 +69,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     // 严格模式的三个细分开关
     var strictBlockSettings by mutableStateOf(Prefs.strictBlockSettings)
         private set
-    var strictBlockShade by mutableStateOf(Prefs.strictBlockShade)
+    var strictBlockSystemUi by mutableStateOf(Prefs.strictBlockSystemUi)
+    var strictBlockAssistant by mutableStateOf(Prefs.strictBlockAssistant)
         private set
     var blockUninstall by mutableStateOf(Prefs.blockUninstall)
         private set
@@ -229,10 +230,15 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         LockController.refreshAllowed(getApplication())
     }
 
-    fun updateStrictBlockShade(v: Boolean) {
-        Prefs.strictBlockShade = v
-        strictBlockShade = v
+    fun updateStrictBlockSystemUi(v: Boolean) {
+        Prefs.strictBlockSystemUi = v
+        strictBlockSystemUi = v
         LockController.refreshAllowed(getApplication())
+    }
+
+    fun updateStrictBlockAssistant(v: Boolean) {
+        Prefs.strictBlockAssistant = v
+        strictBlockAssistant = v
     }
 
     fun updateBlockUninstall(v: Boolean) {
