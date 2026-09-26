@@ -215,7 +215,7 @@
     <string name="set_permissions">权限中心</string>
     <string name="set_permissions_desc">逐项检查并申请锁机所需的全部权限</string>
     <string name="set_about">关于</string>
-    <string name="set_about_desc">专注锁机 1.0.0 · 本地运行，不联网，不上传任何数据</string>
+    <string name="set_about_desc">专注锁机 1.0.1 · 本地运行，不联网，不上传任何数据</string>
 
     <!-- ==================== 权限中心 ==================== -->
     <string name="perm_title">权限中心</string>

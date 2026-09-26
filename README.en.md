@@ -52,8 +52,8 @@ Prebuilt packages live in `dist/`:
 
 | File | Size | Notes |
 | --- | --- | --- |
-| `FocusLock-1.0.0-release.apk` | 2.4 MB | **Recommended.** R8-shrunk, signed |
-| `FocusLock-1.0.0-debug.apk` | 13 MB | Debug build with full symbols, for troubleshooting |
+| `FocusLock-1.0.1-release.apk` | 2.4 MB | **Recommended.** R8-shrunk, signed |
+| `FocusLock-1.0.1-debug.apk` | 13 MB | Debug build with full symbols, for troubleshooting |
 
 Transfer to your phone and tap to install; allow "unknown sources" when prompted.
 
@@ -441,7 +441,7 @@ and weekly minute totals.
 
 This repository deliberately **does not contain APKs** (build outputs don't belong in version
 control). Packages are published on the [Releases](../../releases) page — grab
-`FocusLock-1.0.0-release.apk` and install it.
+`FocusLock-1.0.1-release.apk` and install it.
 
 If you'd rather build it yourself, `./gradlew assembleRelease` produces the APK under
 `app/build/outputs/apk/release/`. Without the signing key present the build falls back to the

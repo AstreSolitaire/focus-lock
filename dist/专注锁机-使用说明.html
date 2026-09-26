@@ -124,6 +124,7 @@
 <p><a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-5b4be0.svg" alt="License: MIT"></a>
 <a href="#%E4%BA%8C%E5%AE%89%E8%A3%85"><img src="https://img.shields.io/badge/Android-8.0%2B-3ddc84.svg" alt="Platform"></a>
 <a href="../../releases"><img src="https://img.shields.io/github/v/release/AstreSolitaire/focus-lock?color=5b4be0" alt="Release"></a></p>
+<p><strong><a href="README.en.md">English</a></strong> · <strong>简体中文</strong></p>
 <p><strong>按星期几 + 时间段强制锁机的安卓专注工具：可选白名单，完全离线，没有网络权限。</strong></p>
 <p>An Android app locker for focused study — schedule-based whitelisting, reboot-proof
 timers, and <strong>no network permission at all</strong>. MIT licensed.</p>
@@ -138,10 +139,10 @@ timers, and <strong>no network permission at all</strong>. MIT licensed.</p>
 </p><p><strong><a href="../../releases/latest">⬇ 下载安装包</a></strong> · <strong><a href="#%E5%9B%9B%E6%9D%83%E9%99%90%E9%83%BD%E6%98%AF%E5%B9%B2%E4%BB%80%E4%B9%88%E7%94%A8%E7%9A%84">权限说明</a></strong> · <strong><a href="#%E4%BA%94%E9%94%81%E6%9C%BA%E6%98%AF%E6%80%8E%E4%B9%88%E5%81%9A%E5%88%B0%E8%B5%96%E4%B8%8D%E6%8E%89%E7%9A%84">抗绕过设计</a></strong></p>
 <hr>
 <h2>一、它能做什么</h2>
-<div class="tw"><table><thead><tr><th align="left">能力</th><th align="left">说明</th></tr></thead><tbody><tr><td align="left">多条锁机计划</td><td align="left">想建几条建几条，每条独立启用 / 停用</td></tr><tr><td align="left">每天多个时间段</td><td align="left">一条计划里可以加任意多个起止时间，支持跨午夜（22:30 - 06:00）</td></tr><tr><td align="left">按星期生效</td><td align="left">每条计划自己选每周哪几天生效，另有一键「每天 / 工作日 / 周末」</td></tr><tr><td align="left">可选白名单</td><td align="left">白名单里的应用锁机期间照常使用；也可以关掉白名单，除系统必需应用外全拦</td></tr><tr><td align="left">锁屏直接启动白名单应用</td><td align="left">锁屏底部有「白名单应用（N）」按钮，点开就是可用的应用列表，点一下直接打开，按 Home 回到锁屏</td></tr><tr><td align="left">白名单覆盖全部应用</td><td align="left">可选范围是系统里除本应用外的<strong>所有</strong>已安装应用，含没有桌面图标的系统应用</td></tr><tr><td align="left">屏蔽 AI 助手规避</td><td align="left">长按电源键唤起小布（或其他 AI 助手）再让它替你开应用这条路被堵死</td></tr><tr><td align="left">普通 / 严格两种模式</td><td align="left">严格模式额外屏蔽系统设置与下拉通知栏，并阻止卸载</td></tr><tr><td align="left">自选锁屏图片</td><td align="left">从相册挑任意图片当锁机背景，自动裁切铺满</td></tr><tr><td align="left">锁屏显示时间</td><td align="left">大字时钟 + 进度环 + 剩余倒计时 + 预计解锁时间</td></tr><tr><td align="left">不影响开关机</td><td align="left">电源键完全不拦截，长按照样弹出电源菜单，正常关机 / 重启</td></tr><tr><td align="left">重启不会提前结束</td><td align="left">会话时长写在磁盘上，开机后自动恢复并接着走完剩余时间</td></tr><tr><td align="left">到点自动退出</td><td align="left">时间一到自动解锁并通知，不用手动干预</td></tr><tr><td align="left">记录锁机总时长</td><td align="left">今日 / 本周 / 本月 / 累计，近 7 天柱状图，每一次锁机明细</td></tr><tr><td align="left">权限集中申请</td><td align="left">权限中心逐项检测、逐项跳转，缺哪项一目了然</td></tr><tr><td align="left">精简 UI</td><td align="left">Material 3 + Compose，深浅色主题，底部四页签</td></tr></tbody></table></div><hr>
+<div class="tw"><table><thead><tr><th align="left">能力</th><th align="left">说明</th></tr></thead><tbody><tr><td align="left">多条锁机计划</td><td align="left">想建几条建几条，每条独立启用 / 停用</td></tr><tr><td align="left">每天多个时间段</td><td align="left">一条计划里可以加任意多个起止时间，支持跨午夜（22:30 - 06:00）</td></tr><tr><td align="left">按星期生效</td><td align="left">每条计划自己选每周哪几天生效，另有一键「每天 / 工作日 / 周末」</td></tr><tr><td align="left">可选白名单</td><td align="left">白名单里的应用锁机期间照常使用；也可以关掉白名单，除系统必需应用外全拦</td></tr><tr><td align="left">锁屏直接启动白名单应用</td><td align="left">锁屏底部有「白名单应用（N）」按钮，点开就是可用的应用列表，点一下直接打开，按 Home 回到锁屏</td></tr><tr><td align="left">白名单覆盖全部应用</td><td align="left">可选范围是系统里除本应用外的<strong>所有</strong>已安装应用，含没有桌面图标的系统应用</td></tr><tr><td align="left">屏蔽 AI 助手规避</td><td align="left">长按电源键唤起小布（或其他 AI 助手）再让它替你开应用这条路被堵死</td></tr><tr><td align="left">普通 / 严格两种模式</td><td align="left">严格模式额外屏蔽系统设置与下拉通知栏，并阻止卸载</td></tr><tr><td align="left">自选锁屏图片</td><td align="left">从相册挑任意图片当锁机背景，自动裁切铺满</td></tr><tr><td align="left">锁屏显示时间</td><td align="left">大字时钟 + 进度环 + 剩余倒计时 + 预计解锁时间</td></tr><tr><td align="left">不影响开关机</td><td align="left">电源键完全不拦截，长按照样弹出电源菜单，正常关机 / 重启</td></tr><tr><td align="left">重启不会提前结束</td><td align="left">会话时长写在磁盘上，开机后自动恢复并接着走完剩余时间</td></tr><tr><td align="left">到点自动退出</td><td align="left">时间一到自动解锁并通知，不用手动干预</td></tr><tr><td align="left">记录锁机总时长</td><td align="left">今日 / 本周 / 本月 / 累计，近 7 天柱状图，每一次锁机明细</td></tr><tr><td align="left">权限集中申请</td><td align="left">权限中心逐项检测、逐项跳转，缺哪项一目了然</td></tr><tr><td align="left">精简 UI</td><td align="left">Material 3 + Compose，深浅色主题，底部四页签</td></tr><tr><td align="left">中英双语</td><td align="left">默认跟随系统语言；也可在「设置 → 语言」里单独指定，或走 Android 13 的「应用语言」系统设置</td></tr></tbody></table></div><hr>
 <h2>二、安装</h2>
 <p>已经编译好的安装包在 <code>dist/</code> 目录：</p>
-<div class="tw"><table><thead><tr><th align="left">文件</th><th align="left">大小</th><th align="left">说明</th></tr></thead><tbody><tr><td align="left"><code>FocusLock-1.0.0-release.apk</code></td><td align="left">2.4 MB</td><td align="left"><strong>推荐安装这个</strong>。已开启 R8 压缩混淆，用项目内自带的证书签名</td></tr><tr><td align="left"><code>FocusLock-1.0.0-debug.apk</code></td><td align="left">13 MB</td><td align="left">调试包，含完整调试符号，排查问题时用</td></tr></tbody></table></div><p>用数据线或微信传到手机，点击安装。系统提示「未知来源应用」时允许即可。</p>
+<div class="tw"><table><thead><tr><th align="left">文件</th><th align="left">大小</th><th align="left">说明</th></tr></thead><tbody><tr><td align="left"><code>FocusLock-1.0.1-release.apk</code></td><td align="left">2.4 MB</td><td align="left"><strong>推荐安装这个</strong>。已开启 R8 压缩混淆，用项目内自带的证书签名</td></tr><tr><td align="left"><code>FocusLock-1.0.1-debug.apk</code></td><td align="left">13 MB</td><td align="left">调试包，含完整调试符号，排查问题时用</td></tr></tbody></table></div><p>用数据线或微信传到手机，点击安装。系统提示「未知来源应用」时允许即可。</p>
 <p><strong>首次打开请务必走完「权限中心」</strong>，尤其是前两项：</p>
 <ol>
 <li><strong>无障碍服务（应用监视）</strong> —— 拦截功能的核心，不开等于没锁</li>
@@ -159,6 +160,19 @@ timers, and <strong>no network permission at all</strong>. MIT licensed.</p>
 </ol>
 <p>想先试一下效果，首页有「立即专注」的 25 / 45 / 60 / 90 分钟快捷按钮。</p>
 <p>白名单在底部「白名单」页配置：搜索、勾选即可，被选中的应用锁机期间能正常打开。</p>
+<hr>
+<h2>三之二、中英双语</h2>
+<p>界面支持中文和英文：</p>
+<ul>
+<li><strong>默认跟随系统语言</strong> —— 系统是中文就显示中文，其他情况显示英文</li>
+<li><strong>也可以在应用内单独指定</strong> —— 设置 → 语言 → 跟随系统 / 简体中文 / English</li>
+<li><strong>Android 13 及以上</strong>还能在「系统设置 → 应用 → 专注锁机 → 语言」里切换</li>
+</ul>
+<p>所有文案都在 <code>app/src/main/res/values/</code>（英文，同时作为兜底）和 <code>values-zh/</code>（中文）两份资源里。
+想加第三种语言，复制 <code>values-zh/</code> 改成对应语言代码再翻译即可。</p>
+<blockquote>
+<p>你自己的数据（计划名、锁屏文案）不会被翻译——那是你写的东西，不是界面。</p>
+</blockquote>
 <hr>
 <h2>四、权限都是干什么用的</h2>
 <div class="tw"><table><thead><tr><th align="left">权限</th><th align="left">必需性</th><th align="left">用途</th></tr></thead><tbody><tr><td align="left">无障碍服务</td><td align="left"><strong>必需</strong></td><td align="left">读取「当前前台是哪个应用」，锁机期间把白名单外的应用弹回锁屏。<strong>不读取任何屏幕内容</strong>（配置里 <code>canRetrieveWindowContent=false</code>）</td></tr><tr><td align="left">悬浮窗</td><td align="left"><strong>必需</strong></td><td align="left">绕过安卓 10+ 的后台启动界面限制，锁机到点自动全屏弹出</td></tr><tr><td align="left">通知</td><td align="left"><strong>必需</strong></td><td align="left">常驻通知显示剩余时间；到点提醒</td></tr><tr><td align="left">精确闹钟</td><td align="left"><strong>必需</strong></td><td align="left">到点准时开始 / 准时结束</td></tr><tr><td align="left">忽略电池优化</td><td align="left"><strong>必需</strong></td><td align="left">防止锁机服务被系统在后台冻结</td></tr><tr><td align="left">使用情况访问</td><td align="left">可选</td><td align="left">无障碍之外的兜底判定</td></tr><tr><td align="left">设备管理员</td><td align="left">可选</td><td align="left">锁机期间阻止卸载 / 强行停止</td></tr><tr><td align="left">列出已安装应用</td><td align="left">自动</td><td align="left">用于生成白名单列表</td></tr></tbody></table></div><p><strong>这个应用完全离线</strong>，没有任何网络权限，不联网、不上传、不收集任何数据。所有判断都在本机完成。</p>
@@ -363,7 +377,7 @@ app/src/test/java/com/focuslock/app/
 <hr>
 <h2>九、安装包</h2>
 <p>仓库里<strong>不含 APK</strong>（构建产物不进版本库）。安装包发布在
-<a href="../../releases">Releases</a> 页面：下载 <code>FocusLock-1.0.0-release.apk</code> 传到手机上安装即可。</p>
+<a href="../../releases">Releases</a> 页面：下载 <code>FocusLock-1.0.1-release.apk</code> 传到手机上安装即可。</p>
 <p>如果你是自己 clone 下来编译，<code>./gradlew assembleRelease</code> 的产物在
 <code>app/build/outputs/apk/release/</code>。仓库里没有附带签名密钥，
 所以默认会用调试签名——自己长期使用请换成自己的密钥（见上一节）。</p>

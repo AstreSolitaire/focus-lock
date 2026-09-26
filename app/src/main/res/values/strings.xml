@@ -220,7 +220,7 @@
     <string name="set_permissions">Permission centre</string>
     <string name="set_permissions_desc">Check and request every permission a lock needs</string>
     <string name="set_about">About</string>
-    <string name="set_about_desc">FocusLock 1.0.0 · runs locally, no network, collects nothing</string>
+    <string name="set_about_desc">FocusLock 1.0.1 · runs locally, no network, collects nothing</string>
 
     <!-- ==================== 权限中心 ==================== -->
     <string name="perm_title">Permission centre</string>

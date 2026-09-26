@@ -54,8 +54,8 @@ timers, and **no network permission at all**. MIT licensed.
 
 | 文件 | 大小 | 说明 |
 | --- | --- | --- |
-| `FocusLock-1.0.0-release.apk` | 2.4 MB | **推荐安装这个**。已开启 R8 压缩混淆，用项目内自带的证书签名 |
-| `FocusLock-1.0.0-debug.apk` | 13 MB | 调试包，含完整调试符号，排查问题时用 |
+| `FocusLock-1.0.1-release.apk` | 2.4 MB | **推荐安装这个**。已开启 R8 压缩混淆，用项目内自带的证书签名 |
+| `FocusLock-1.0.1-debug.apk` | 13 MB | 调试包，含完整调试符号，排查问题时用 |
 
 用数据线或微信传到手机，点击安装。系统提示「未知来源应用」时允许即可。
 
@@ -411,7 +411,7 @@ app/src/test/java/com/focuslock/app/
 ## 九、安装包
 
 仓库里**不含 APK**（构建产物不进版本库）。安装包发布在
-[Releases](../../releases) 页面：下载 `FocusLock-1.0.0-release.apk` 传到手机上安装即可。
+[Releases](../../releases) 页面：下载 `FocusLock-1.0.1-release.apk` 传到手机上安装即可。
 
 如果你是自己 clone 下来编译，`./gradlew assembleRelease` 的产物在
 `app/build/outputs/apk/release/`。仓库里没有附带签名密钥，
