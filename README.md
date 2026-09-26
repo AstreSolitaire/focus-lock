@@ -4,6 +4,8 @@
 [![Platform](https://img.shields.io/badge/Android-8.0%2B-3ddc84.svg)](#二安装)
 [![Release](https://img.shields.io/github/v/release/AstreSolitaire/focus-lock?color=5b4be0)](../../releases)
 
+**[English](README.en.md)** · **简体中文**
+
 **按星期几 + 时间段强制锁机的安卓专注工具：可选白名单，完全离线，没有网络权限。**
 
 An Android app locker for focused study — schedule-based whitelisting, reboot-proof
