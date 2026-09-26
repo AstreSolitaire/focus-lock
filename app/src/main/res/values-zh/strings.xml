@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 简体中文。默认资源（values/）是英文，任何没有翻译的语言都会回落到英文。 -->
+<resources>
+
+    <string name="app_name">专注锁机</string>
+    <string name="app_title">专注锁机</string>
+
+    <!-- ==================== 通用 ==================== -->
+    <string name="common_back">返回</string>
+    <string name="common_save">保存</string>
+    <string name="common_cancel">取消</string>
+    <string name="common_confirm">确定</string>
+    <string name="common_delete">删除</string>
+    <string name="common_clear">清空</string>
+    <string name="common_view">查看</string>
+    <string name="common_optional">可选</string>
+    <string name="common_enabled">已开启</string>
+    <string name="common_disabled">未开启</string>
+    <string name="common_remove">移除</string>
+    <string name="common_unnamed_schedule">未命名计划</string>
+    <string name="common_week_short">周</string>
+    <string name="common_minutes">%1$d 分钟</string>
+    <string name="common_strict_mode">严格模式</string>
+    <string name="common_normal_mode">普通模式</string>
+    <string name="common_settings">设置</string>
+
+    <!-- ==================== 底部页签 ==================== -->
+    <string name="tab_home">首页</string>
+    <string name="tab_schedules">计划</string>
+    <string name="tab_whitelist">白名单</string>
+    <string name="tab_stats">数据</string>
+
+    <!-- ==================== 时间格式 ==================== -->
+    <string name="fmt_today">今天</string>
+    <string name="fmt_tomorrow">明天</string>
+    <string name="fmt_duration_zero">0分</string>
+    <string name="fmt_duration_minutes">%1$d分</string>
+    <string name="fmt_duration_hours">%1$d小时</string>
+    <string name="fmt_duration_hm">%1$d小时%2$d分</string>
+    <string name="fmt_duration_hms">%1$d 小时 %2$d 分 %3$d 秒</string>
+    <string name="weekday_mon">周一</string>
+    <string name="weekday_tue">周二</string>
+    <string name="weekday_wed">周三</string>
+    <string name="weekday_thu">周四</string>
+    <string name="weekday_fri">周五</string>
+    <string name="weekday_sat">周六</string>
+    <string name="weekday_sun">周日</string>
+    <string name="weekday_short_mon">一</string>
+    <string name="weekday_short_tue">二</string>
+    <string name="weekday_short_wed">三</string>
+    <string name="weekday_short_thu">四</string>
+    <string name="weekday_short_fri">五</string>
+    <string name="weekday_short_sat">六</string>
+    <string name="weekday_short_sun">日</string>
+    <string name="fmt_date_pattern">M月d日</string>
+    <string name="fmt_date_full_pattern">yyyy年M月d日</string>
+    <string name="time_whole_day">（全天）</string>
+    <string name="time_next_day"> 次日</string>
+
+    <!-- ==================== 首页 ==================== -->
+    <string name="home_check_permissions">权限检查</string>
+    <string name="home_settings">设置</string>
+    <string name="home_master_switch">锁机总开关</string>
+    <string name="home_master_on">到点会自动锁机</string>
+    <string name="home_master_off">已暂停，所有计划都不生效</string>
+    <string name="home_issues_action">去完成设置</string>
+    <string name="home_issue_accessibility">无障碍服务未开启</string>
+    <string name="home_issue_overlay">悬浮窗权限未授予</string>
+    <string name="home_issue_alarm">精确闹钟未授权</string>
+    <string name="home_issue_battery">未加入电池优化白名单</string>
+    <string name="home_timeline">今日时间轴</string>
+    <string name="home_timeline_empty_title">今天没有锁机安排</string>
+    <string name="home_timeline_empty_body">到「计划」页新建一条，或选择需要生效的星期几</string>
+    <string name="home_quick_focus">立即专注</string>
+    <string name="home_quick_focus_hint">不等计划，现在就开始一段锁机（不启用严格模式，可随时结束）</string>
+    <string name="home_stat_today">今日</string>
+    <string name="home_stat_week">本周</string>
+    <string name="home_stat_total">累计</string>
+    <string name="home_state_locked">锁机中</string>
+    <string name="home_state_idle">未锁机</string>
+    <string name="home_until_next">距下次锁机</string>
+    <string name="home_unlock_at">%1$s 解锁</string>
+    <string name="home_essentials_only">仅系统必需应用可用</string>
+    <string name="home_mode_strict">严格模式</string>
+    <string name="home_mode_normal">普通模式</string>
+    <string name="home_end_now">结束本次</string>
+    <string name="home_no_upcoming">近期没有锁机安排</string>
+    <string name="home_no_enabled">当前没有启用中的计划，去「计划」页新建一条吧</string>
+    <string name="home_status_done">已结束</string>
+    <string name="home_status_active">进行中</string>
+    <string name="home_status_upcoming">待开始</string>
+    <string name="home_next_detail">%1$s · %2$s 开始，%3$s 结束</string>
+
+    <!-- ==================== 计划列表 ==================== -->
+    <string name="sched_title">锁机计划</string>
+    <string name="sched_subtitle">%1$d 条生效中 · 每周合计 %2$s</string>
+    <string name="sched_new">新建计划</string>
+    <string name="sched_empty_title">还没有锁机计划</string>
+    <string name="sched_empty_body">点右下角新建：选择每周哪几天生效，再设定一天里的一个或多个时间段</string>
+    <string name="sched_delete_title">删除计划</string>
+    <string name="sched_delete_body">确认删除「%1$s」？删除后不会再自动锁机。</string>
+    <string name="sched_weekly">每周 %1$s</string>
+    <string name="sched_pill_whitelist">白名单生效</string>
+    <string name="sched_pill_block_all">全部拦截</string>
+
+    <!-- ==================== 计划编辑 ==================== -->
+    <string name="edit_new_title">新建计划</string>
+    <string name="edit_edit_title">编辑计划</string>
+    <string name="edit_weekly_total">每周合计 %1$s</string>
+    <string name="edit_name_label">计划名称</string>
+    <string name="edit_name_hint">例如：早自习 / 晚自习 / 睡前断网</string>
+    <string name="edit_days_label">生效星期</string>
+    <string name="edit_days_none">未选择</string>
+    <string name="edit_days_every">每天</string>
+    <string name="edit_days_weekdays">工作日</string>
+    <string name="edit_days_weekend">周末</string>
+    <string name="edit_ranges_label">锁机时间段</string>
+    <string name="edit_ranges_multi">可添加多个</string>
+    <string name="edit_ranges_empty">还没有时间段，点下面的「添加时间段」设定</string>
+    <string name="edit_range_next_day"> · 跨到第二天</string>
+    <string name="edit_add_range">添加时间段</string>
+    <string name="edit_range_hint">结束时间早于开始时间表示跨过午夜，例如 22:30 - 06:00</string>
+    <string name="edit_behavior">锁机行为</string>
+    <string name="edit_use_whitelist">启用白名单</string>
+    <string name="edit_use_whitelist_desc">开启后，白名单里的应用在锁机期间仍可正常使用</string>
+    <string name="edit_strict">严格模式</string>
+    <string name="edit_strict_desc">屏蔽系统设置与下拉通知栏，并阻止卸载，退出难度最大</string>
+    <string name="edit_create">创建计划</string>
+    <string name="edit_save_changes">保存修改</string>
+    <string name="edit_delete">删除这条计划</string>
+    <string name="edit_err_name">请先给计划起个名字</string>
+    <string name="edit_err_days">请至少选择一天生效</string>
+    <string name="edit_err_ranges">请至少添加一个锁机时间段</string>
+    <string name="range_title_new">添加时间段</string>
+    <string name="range_title_edit">修改时间段</string>
+    <string name="range_start">开始时间</string>
+    <string name="range_end">结束时间</string>
+    <string name="range_whole_day">起止相同 = 全天 24 小时锁机</string>
+    <string name="range_total">共 %1$s</string>
+    <string name="range_total_next_day">共 %1$s，跨到第二天</string>
+
+    <!-- ==================== 白名单 ==================== -->
+    <string name="wl_title">白名单</string>
+    <string name="wl_subtitle">锁机期间允许正常使用的应用 · 已选 %1$d 个</string>
+    <string name="wl_search_hint">搜索应用名或包名</string>
+    <string name="wl_only_selected">只看已选</string>
+    <string name="wl_show_system">显示系统应用</string>
+    <string name="wl_selected_prefix">已选：%1$s</string>
+    <string name="wl_selected_more"> 等 %1$d 个</string>
+    <string name="wl_loading_title">正在读取应用列表</string>
+    <string name="wl_loading_body">首次加载需要一点时间</string>
+    <string name="wl_empty_title">没有匹配的应用</string>
+    <string name="wl_empty_no_permission">读取不到已安装应用，请检查权限</string>
+    <string name="wl_empty_try_other">换个关键词试试</string>
+    <string name="wl_pill_always_blocked">锁机时仍拦住</string>
+    <string name="wl_pill_no_ui">无界面</string>
+    <string name="wl_system_app">系统应用 · %1$s</string>
+
+    <!-- ==================== 数据 ==================== -->
+    <string name="stats_title">锁机数据</string>
+    <string name="stats_subtitle">累计专注 %1$s</string>
+    <string name="stats_subtitle_empty">还没有记录</string>
+    <string name="stats_month">本月</string>
+    <string name="stats_last7">最近 7 天</string>
+    <string name="stats_best">最佳 %1$s</string>
+    <string name="stats_sessions">锁机记录</string>
+    <string name="stats_count">%1$d 条</string>
+    <string name="stats_empty_title">还没有完成过锁机</string>
+    <string name="stats_empty_body">锁机到点结束后，这里会留下每一次的记录</string>
+    <string name="stats_done">完成</string>
+    <string name="stats_interrupted">中断</string>
+    <string name="stats_clear">清空全部统计数据</string>
+    <string name="stats_clear_title">清空统计数据</string>
+    <string name="stats_clear_body">累计时长与全部锁机记录都会被删除，计划与白名单不受影响。</string>
+
+    <!-- ==================== 设置 ==================== -->
+    <string name="set_title">设置</string>
+    <string name="set_appearance">锁屏外观</string>
+    <string name="set_wallpaper_pick">点击选择锁屏背景图</string>
+    <string name="set_wallpaper_hint">建议竖版高清图，会自动裁切铺满</string>
+    <string name="set_wallpaper_preview">锁屏背景预览</string>
+    <string name="set_wallpaper_remove">移除背景图</string>
+    <string name="set_quote">锁屏文案</string>
+    <string name="set_quote_hint">写一句鼓励自己的话</string>
+    <string name="set_dark_mode">深色模式</string>
+    <string name="set_theme_system">跟随系统</string>
+    <string name="set_theme_light">浅色</string>
+    <string name="set_theme_dark">深色</string>
+    <string name="set_language">语言</string>
+    <string name="set_language_system">跟随系统</string>
+    <string name="set_strict_rules">严格模式细则</string>
+    <string name="set_strict_rules_desc">只有「严格模式」的计划才会应用以下限制</string>
+    <string name="set_strict_settings">屏蔽「系统设置」</string>
+    <string name="set_strict_settings_desc">防止在锁机期间关闭无障碍、修改系统时间或强行停止本应用</string>
+    <string name="set_strict_shade">屏蔽下拉通知栏</string>
+    <string name="set_strict_shade_desc">长按电源键会有 8 秒宽限期，保证能正常关机 / 重启</string>
+    <string name="set_block_uninstall">锁机期间阻止卸载</string>
+    <string name="set_block_uninstall_on">已生效（需设备管理员权限）</string>
+    <string name="set_block_uninstall_off">需要先授予设备管理员权限</string>
+    <string name="set_lock_screen_on_start">锁机开始时熄屏</string>
+    <string name="set_lock_screen_on_start_desc">到点直接黑屏，减少一秒钟的犹豫</string>
+    <string name="set_reminders">提醒</string>
+    <string name="set_vibrate">震动提示</string>
+    <string name="set_vibrate_desc">锁机开始与结束时各震一下</string>
+    <string name="set_emergency">紧急解锁</string>
+    <string name="set_emergency_desc">设置一个密码后，锁机期间长按锁屏进度环可以输入密码提前结束。留空表示完全不给出口，只能等时间走完。密码忘记无法找回。</string>
+    <string name="set_emergency_none">未设置</string>
+    <string name="set_emergency_set">已设置（%1$s）</string>
+    <string name="set_emergency_none_action">点按设置密码</string>
+    <string name="set_emergency_set_action">点按修改或清除</string>
+    <string name="set_emergency_pw_title">紧急解锁密码</string>
+    <string name="set_emergency_pw_hint">留空表示取消紧急解锁</string>
+    <string name="set_permissions">权限中心</string>
+    <string name="set_permissions_desc">逐项检查并申请锁机所需的全部权限</string>
+    <string name="set_about">关于</string>
+    <string name="set_about_desc">专注锁机 1.0.0 · 本地运行，不联网，不上传任何数据</string>
+
+    <!-- ==================== 权限中心 ==================== -->
+    <string name="perm_title">权限中心</string>
+    <string name="perm_subtitle">必需项 %1$d/%2$d 已完成</string>
+    <string name="perm_all_ok">全部必需权限已就绪</string>
+    <string name="perm_all_ok_desc">到点会自动锁机，白名单之外的应用会被拦下</string>
+    <string name="perm_missing_desc">权限不全时，锁机可能不会自动弹出或不生效</string>
+    <string name="perm_go">去开启</string>
+    <string name="perm_footer">提示：不同品牌的手机（小米 / 华为 / OPPO / vivo 等）在「无障碍」和「后台运行」上还有各自的自启动开关，建议一并允许，锁机才会稳定。</string>
+
+    <string name="perm_accessibility_title">无障碍服务（应用监视）</string>
+    <string name="perm_accessibility_desc">锁机期间识别当前打开的应用，白名单之外的一律弹回锁机界面。这是拦截功能的核心，不开启则锁机只能靠自觉。</string>
+    <string name="perm_overlay_title">悬浮窗权限</string>
+    <string name="perm_overlay_desc">Android 10 起禁止应用在后台直接弹出界面。授予悬浮窗权限后，锁机到点才能自动全屏弹出。不开的话到点只会有通知，需要手动点开。</string>
+    <string name="perm_notification_title">通知权限</string>
+    <string name="perm_notification_desc">用于显示锁机剩余时间的常驻通知，以及到点提醒。</string>
+    <string name="perm_alarm_title">精确闹钟</string>
+    <string name="perm_alarm_desc">保证锁机在整点准时开始、准时结束。未授权时系统会延迟几分钟，锁机会晚一点生效。</string>
+    <string name="perm_battery_title">忽略电池优化</string>
+    <string name="perm_battery_desc">把本应用加入电池优化白名单，避免锁机服务在后台被系统冻结或杀掉。</string>
+    <string name="perm_usage_title">使用情况访问（可选）</string>
+    <string name="perm_usage_desc">在无障碍之外提供一层兜底判定。绝大多数情况下不开启也能正常工作。</string>
+    <string name="perm_admin_title">设备管理员（可选）</string>
+    <string name="perm_admin_desc">锁机期间阻止卸载或强行停止本应用，让锁机更难被中途破坏。</string>
+
+    <!-- ==================== 锁屏 ==================== -->
+    <string name="lock_default_schedule_name">专注中</string>
+    <string name="lock_remaining">剩余</string>
+    <string name="lock_unlock_at">预计 %1$s 解锁</string>
+    <string name="lock_whitelist_off">白名单已关闭</string>
+    <string name="lock_mode_strict">严格模式</string>
+    <string name="lock_mode_normal">普通模式</string>
+    <string name="lock_emergency_hint">长按进度环可输入紧急解锁密码</string>
+    <string name="lock_stay">专注期间请勿离开</string>
+    <string name="lock_apps_button">白名单应用（%1$d）</string>
+    <string name="lock_apps_title">白名单应用</string>
+    <string name="lock_apps_hint">点按即可打开；按 Home 键会回到锁机界面</string>
+    <string name="lock_keep_going">继续专注</string>
+    <string name="lock_emergency_title">紧急解锁</string>
+    <string name="lock_emergency_body">输入你设置的紧急密码可以立刻结束本次锁机，这次记录会被标记为「未完成」。</string>
+    <string name="lock_emergency_wrong">密码不正确</string>
+    <string name="lock_emergency_do">解锁</string>
+    <string name="lock_default_quote">此刻的专注，是未来在向你道谢。</string>
+
+    <!-- ==================== 通知 ==================== -->
+    <string name="notif_channel_alert">锁机提醒</string>
+    <string name="notif_channel_alert_desc">锁机开始、结束与异常提醒</string>
+    <string name="notif_locking_title">专注中 · %1$s</string>
+    <string name="notif_locking_text">剩余 %1$s</string>
+    <string name="notif_locking_subtext">已锁 %1$s</string>
+    <string name="notif_end_now">结束锁机</string>
+    <string name="notif_ended_title">锁机已结束</string>
+    <string name="notif_ended_text">「%1$s」%2$s，辛苦了</string>
+    <string name="notif_fallback_title">专注中</string>
+    <string name="notif_fallback_text">点按返回锁机界面</string>
+    <string name="notif_accessibility_lost_title">锁机拦截已失效</string>
+    <string name="notif_accessibility_lost_text">「专注锁机」的无障碍服务被关闭了，白名单之外的应用暂时拦不住。请在系统设置中重新开启。</string>
+
+    <!-- ==================== 结束原因 ==================== -->
+    <string name="reason_schedule_end">时段结束</string>
+    <string name="reason_master_off">总开关已关闭</string>
+    <string name="reason_manual">用户手动结束</string>
+    <string name="reason_emergency">紧急解锁</string>
+
+    <!-- ==================== 无障碍 / 设备管理员 描述 ==================== -->
+    <string name="accessibility_label">专注锁机 · 应用监视</string>
+    <string name="accessibility_summary">锁机时段内拦截白名单之外的应用</string>
+    <string name="accessibility_desc">用于在锁机时段内识别当前正在使用的应用。若该应用不在白名单中，本服务会立即把锁机界面重新显示到最前面。服务不读取、不上传任何屏幕内容，所有判断都在本机完成。</string>
+    <string name="device_admin_desc">锁机时段内防止「专注锁机」被卸载或强行停止。</string>
+    <string name="device_admin_explain">用于在锁机时段内阻止「专注锁机」被卸载或强行停止</string>
+    <string name="lock_channel_name">锁机状态</string>
+    <string name="lock_channel_desc">锁机进行中显示剩余时间</string>
+
+    <plurals name="home_issues_title">
+        <item quantity="other">%1$d 项设置未完成</item>
+    </plurals>
+    <plurals name="perm_still_missing">
+        <item quantity="other">还有 %1$d 项必需权限未完成</item>
+    </plurals>
+    <plurals name="home_enabled_but_not_today">
+        <item quantity="other">已启用 %1$d 条计划，但今天不生效</item>
+    </plurals>
+    <plurals name="home_whitelist_n">
+        <item quantity="other">白名单 %1$d 个应用可用</item>
+    </plurals>
+    <plurals name="lock_whitelist_n">
+        <item quantity="other">白名单 %1$d 个应用可用</item>
+    </plurals>
+    <plurals name="edit_days_n">
+        <item quantity="other">已选 %1$d 天</item>
+    </plurals>
+
+</resources>

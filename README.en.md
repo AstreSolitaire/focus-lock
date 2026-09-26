@@ -42,6 +42,7 @@ a brick, with only a handful of study apps still usable.
 | Tracks total locked time | Today / this week / this month / all-time, plus a 7-day bar chart and per-session log |
 | Centralised permission setup | A permission centre checks each item and deep-links to the right system page |
 | Clean UI | Material 3 + Compose, light/dark themes, four bottom tabs |
+| English + Chinese | Follows the system language by default; override it from Settings → Language, or via the Android 13 per-app language setting |
 
 ---
 
@@ -77,6 +78,23 @@ To try it immediately, the home tab has **Focus now** buttons for 25 / 45 / 60 /
 
 Configure the whitelist on the **Whitelist** tab — search and tick. Selected apps remain
 launchable during a lock.
+
+---
+
+## Languages
+
+The UI ships in English and Chinese:
+
+- **Follows the system language by default** — Chinese system, Chinese UI; anything else gets English
+- **Override it in-app** — Settings → Language → System / 简体中文 / English
+- **Android 13+** also exposes it under System Settings → Apps → FocusLock → Language
+
+All copy lives in `app/src/main/res/values/` (English, which also serves as the fallback for any
+untranslated locale) and `app/src/main/res/values-zh/` (Chinese). To add a third language, copy
+`values-zh/` under the appropriate locale code and translate.
+
+> Your own data — schedule names, the lock-screen quote — is never translated. That is your
+> writing, not UI chrome.
 
 ---
 

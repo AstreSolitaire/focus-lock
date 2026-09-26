@@ -89,6 +89,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-service:2.8.5")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
     implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")   // 应用内语言切换（含 Android 13 以下的兼容层）
 
     val composeBom = platform("androidx.compose:compose-bom:2024.09.02")
     implementation(composeBom)

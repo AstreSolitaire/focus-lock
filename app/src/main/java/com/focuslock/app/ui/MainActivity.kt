@@ -3,7 +3,7 @@ package com.focuslock.app.ui
 import android.Manifest
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -30,6 +30,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.focuslock.app.data.StatsStore
 import com.focuslock.app.logic.LockController
@@ -43,7 +44,7 @@ import com.focuslock.app.ui.screens.WhitelistScreen
 import com.focuslock.app.ui.theme.FocusLockTheme
 import com.focuslock.app.util.PermissionChecks
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,8 +113,8 @@ private fun TabsRoot(vm: AppViewModel) {
                     NavigationBarItem(
                         selected = vm.tab == tab,
                         onClick = { vm.selectTab(tab) },
-                        icon = { Icon(tab.icon(), contentDescription = tab.label) },
-                        label = { Text(tab.label) },
+                        icon = { Icon(tab.icon(), contentDescription = stringResource(tab.labelRes)) },
+                        label = { Text(stringResource(tab.labelRes)) },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = MaterialTheme.colorScheme.primary,
                             selectedTextColor = MaterialTheme.colorScheme.primary

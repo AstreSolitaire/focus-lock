@@ -42,6 +42,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:localeConfig="@xml/locales_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FocusLock"
@@ -73,6 +74,16 @@
             android:taskAffinity=""
             android:theme="@style/Theme.FocusLock.Lock"
             android:turnScreenOn="true" />
+
+        <!-- 让 AppCompat 自动持久化应用内语言选择（Android 13 以下用得到） -->
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
 
         <!-- ============ 锁机常驻服务 ============ -->
         <service

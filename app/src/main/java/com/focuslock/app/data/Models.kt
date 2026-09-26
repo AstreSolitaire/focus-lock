@@ -1,5 +1,7 @@
 package com.focuslock.app.data
 
+import android.content.Context
+import com.focuslock.app.R
 import java.util.Locale
 
 const val MINUTES_PER_DAY = 1440
@@ -26,13 +28,14 @@ data class TimeRange(
     /** 起止相同表示整整一天，不要写成「次日」那样容易误读 */
     val isWholeDay: Boolean get() = durationMinutes >= MINUTES_PER_DAY
 
-    fun label(): String = buildString {
+    /** 展示用文案，需要 Context 才能拿到「全天 / 次日」这类本地化后缀 */
+    fun label(ctx: Context): String = buildString {
         append(fmtMinute(startMinute))
         append(" - ")
         append(fmtMinute(endMinute))
         when {
-            isWholeDay -> append("（全天）")
-            crossesMidnight -> append(" 次日")
+            isWholeDay -> append(ctx.getString(R.string.time_whole_day))
+            crossesMidnight -> append(ctx.getString(R.string.time_next_day))
         }
     }
 

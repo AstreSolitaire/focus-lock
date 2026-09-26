@@ -1,10 +1,320 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Default resources = English.
+  Any locale without its own translation falls back to this file.
+  Chinese lives in values-zh/strings.xml.
+-->
 <resources>
-    <string name="app_name">专注锁机</string>
-    <string name="accessibility_label">专注锁机 · 应用监视</string>
-    <string name="accessibility_summary">锁机时段内拦截白名单之外的应用</string>
-    <string name="accessibility_desc">用于在锁机时段内识别当前正在使用的应用。若该应用不在白名单中，本服务会立即把锁机界面重新显示到最前面。服务不读取、不上传任何屏幕内容，所有判断都在本机完成。</string>
-    <string name="device_admin_desc">锁机时段内防止「专注锁机」被卸载或强行停止。</string>
-    <string name="lock_channel_name">锁机状态</string>
-    <string name="lock_channel_desc">锁机进行中显示剩余时间</string>
+
+    <string name="app_name">FocusLock</string>
+    <string name="app_title">FocusLock</string>
+
+    <!-- ==================== 通用 ==================== -->
+    <string name="common_back">Back</string>
+    <string name="common_save">Save</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_confirm">OK</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_clear">Clear</string>
+    <string name="common_view">View</string>
+    <string name="common_optional">Optional</string>
+    <string name="common_enabled">On</string>
+    <string name="common_disabled">Off</string>
+    <string name="common_remove">Remove</string>
+    <string name="common_unnamed_schedule">Untitled schedule</string>
+    <string name="common_week_short">W</string>
+    <string name="common_minutes">%1$d min</string>
+    <string name="common_strict_mode">Strict mode</string>
+    <string name="common_normal_mode">Normal mode</string>
+    <string name="common_settings">Settings</string>
+
+    <!-- ==================== 底部页签 ==================== -->
+    <string name="tab_home">Home</string>
+    <string name="tab_schedules">Schedules</string>
+    <string name="tab_whitelist">Whitelist</string>
+    <string name="tab_stats">Stats</string>
+
+    <!-- ==================== 时间格式 ==================== -->
+    <string name="fmt_today">Today</string>
+    <string name="fmt_tomorrow">Tomorrow</string>
+    <string name="fmt_duration_zero">0 min</string>
+    <string name="fmt_duration_minutes">%1$d min</string>
+    <string name="fmt_duration_hours">%1$d hr</string>
+    <string name="fmt_duration_hm">%1$d hr %2$d min</string>
+    <string name="fmt_duration_hms">%1$d h %2$d min %3$d sec</string>
+    <string name="weekday_mon">Mon</string>
+    <string name="weekday_tue">Tue</string>
+    <string name="weekday_wed">Wed</string>
+    <string name="weekday_thu">Thu</string>
+    <string name="weekday_fri">Fri</string>
+    <string name="weekday_sat">Sat</string>
+    <string name="weekday_sun">Sun</string>
+    <!-- 紧凑的星期选择器里用的单字缩写 -->
+    <string name="weekday_short_mon">M</string>
+    <string name="weekday_short_tue">T</string>
+    <string name="weekday_short_wed">W</string>
+    <string name="weekday_short_thu">T</string>
+    <string name="weekday_short_fri">F</string>
+    <string name="weekday_short_sat">S</string>
+    <string name="weekday_short_sun">S</string>
+    <string name="fmt_date_pattern">MMM d</string>
+    <string name="fmt_date_full_pattern">MMMM d, yyyy</string>
+    <string name="time_whole_day"> (all day)</string>
+    <string name="time_next_day"> next day</string>
+
+    <!-- ==================== 首页 ==================== -->
+    <string name="home_check_permissions">Permission check</string>
+    <string name="home_settings">Settings</string>
+    <string name="home_master_switch">Master switch</string>
+    <string name="home_master_on">Locks start automatically on schedule</string>
+    <string name="home_master_off">Paused — no schedule is active</string>
+    <string name="home_issues_action">Finish setup</string>
+    <string name="home_issue_accessibility">Accessibility service is off</string>
+    <string name="home_issue_overlay">Display-over-other-apps not granted</string>
+    <string name="home_issue_alarm">Exact alarms not authorised</string>
+    <string name="home_issue_battery">Not exempted from battery optimisation</string>
+    <string name="home_timeline">Today\'s timeline</string>
+    <string name="home_timeline_empty_title">Nothing scheduled today</string>
+    <string name="home_timeline_empty_body">Create one on the Schedules tab, or pick the weekdays it should apply to</string>
+    <string name="home_quick_focus">Focus now</string>
+    <string name="home_quick_focus_hint">Start a session right away without a schedule (Normal mode, you can end it any time)</string>
+    <string name="home_stat_today">Today</string>
+    <string name="home_stat_week">This week</string>
+    <string name="home_stat_total">All time</string>
+    <string name="home_state_locked">Locked</string>
+    <string name="home_state_idle">Not locked</string>
+    <string name="home_until_next">Until the next lock</string>
+    <string name="home_unlock_at">Unlocks at %1$s</string>
+    <string name="home_essentials_only">System essentials only</string>
+    <string name="home_mode_strict">Strict</string>
+    <string name="home_mode_normal">Normal</string>
+    <string name="home_end_now">End this session</string>
+    <string name="home_no_upcoming">No locks scheduled</string>
+    <string name="home_no_enabled">No schedules are enabled right now — create one on the Schedules tab</string>
+    <string name="home_status_done">Finished</string>
+    <string name="home_status_active">In progress</string>
+    <string name="home_status_upcoming">Upcoming</string>
+    <string name="home_next_detail">%1$s · starts %2$s, ends %3$s</string>
+
+    <!-- ==================== 计划列表 ==================== -->
+    <string name="sched_title">Schedules</string>
+    <string name="sched_subtitle">%1$d active · %2$s per week</string>
+    <string name="sched_new">New schedule</string>
+    <string name="sched_empty_title">No schedules yet</string>
+    <string name="sched_empty_body">Tap + at the bottom right: choose the weekdays it applies to, then add one or more time ranges in the day</string>
+    <string name="sched_delete_title">Delete schedule</string>
+    <string name="sched_delete_body">Delete "%1$s"? It will no longer lock your phone.</string>
+    <string name="sched_weekly">%1$s per week</string>
+    <string name="sched_pill_whitelist">Whitelist on</string>
+    <string name="sched_pill_block_all">Block everything</string>
+
+    <!-- ==================== 计划编辑 ==================== -->
+    <string name="edit_new_title">New schedule</string>
+    <string name="edit_edit_title">Edit schedule</string>
+    <string name="edit_weekly_total">%1$s per week</string>
+    <string name="edit_name_label">Schedule name</string>
+    <string name="edit_name_hint">e.g. Morning study / Evening review / No phone before bed</string>
+    <string name="edit_days_label">Active days</string>
+    <string name="edit_days_none">None selected</string>
+    <string name="edit_days_every">Every day</string>
+    <string name="edit_days_weekdays">Weekdays</string>
+    <string name="edit_days_weekend">Weekends</string>
+    <string name="edit_ranges_label">Lock time ranges</string>
+    <string name="edit_ranges_multi">Multiple allowed</string>
+    <string name="edit_ranges_empty">No time range yet — tap "Add time range" below</string>
+    <string name="edit_range_next_day"> · next day</string>
+    <string name="edit_add_range">Add time range</string>
+    <string name="edit_range_hint">An end time earlier than the start time means it crosses midnight, e.g. 22:30 – 06:00</string>
+    <string name="edit_behavior">Lock behaviour</string>
+    <string name="edit_use_whitelist">Use whitelist</string>
+    <string name="edit_use_whitelist_desc">Whitelisted apps stay usable during a lock</string>
+    <string name="edit_strict">Strict mode</string>
+    <string name="edit_strict_desc">Blocks System Settings and the notification shade, and prevents uninstall — hardest to exit</string>
+    <string name="edit_create">Create schedule</string>
+    <string name="edit_save_changes">Save changes</string>
+    <string name="edit_delete">Delete this schedule</string>
+    <string name="edit_err_name">Give the schedule a name first</string>
+    <string name="edit_err_days">Pick at least one day</string>
+    <string name="edit_err_ranges">Add at least one lock time range</string>
+    <string name="range_title_new">Add time range</string>
+    <string name="range_title_edit">Edit time range</string>
+    <string name="range_start">Start time</string>
+    <string name="range_end">End time</string>
+    <string name="range_whole_day">Same start and end = a full 24-hour lock</string>
+    <string name="range_total">%1$s total</string>
+    <string name="range_total_next_day">%1$s total, crosses into the next day</string>
+
+    <!-- ==================== 白名单 ==================== -->
+    <string name="wl_title">Whitelist</string>
+    <string name="wl_subtitle">Apps usable during a lock · %1$d selected</string>
+    <string name="wl_search_hint">Search by app name or package</string>
+    <string name="wl_only_selected">Selected only</string>
+    <string name="wl_show_system">Show system apps</string>
+    <string name="wl_selected_prefix">Selected: %1$s</string>
+    <string name="wl_selected_more"> and %1$d more</string>
+    <string name="wl_loading_title">Loading app list</string>
+    <string name="wl_loading_body">The first load takes a moment</string>
+    <string name="wl_empty_title">No matching apps</string>
+    <string name="wl_empty_no_permission">Couldn\'t read installed apps — check permissions</string>
+    <string name="wl_empty_try_other">Try a different keyword</string>
+    <string name="wl_pill_always_blocked">Still blocked</string>
+    <string name="wl_pill_no_ui">No UI</string>
+    <string name="wl_system_app">System app · %1$s</string>
+
+    <!-- ==================== 数据 ==================== -->
+    <string name="stats_title">Lock stats</string>
+    <string name="stats_subtitle">%1$s focused in total</string>
+    <string name="stats_subtitle_empty">No records yet</string>
+    <string name="stats_month">This month</string>
+    <string name="stats_last7">Last 7 days</string>
+    <string name="stats_best">Best %1$s</string>
+    <string name="stats_sessions">Sessions</string>
+    <string name="stats_count">%1$d</string>
+    <string name="stats_empty_title">No completed sessions yet</string>
+    <string name="stats_empty_body">Every session that runs to the end will show up here</string>
+    <string name="stats_done">Completed</string>
+    <string name="stats_interrupted">Interrupted</string>
+    <string name="stats_clear">Clear all stats</string>
+    <string name="stats_clear_title">Clear stats</string>
+    <string name="stats_clear_body">Total duration and all session records will be deleted. Schedules and the whitelist are not affected.</string>
+
+    <!-- ==================== 设置 ==================== -->
+    <string name="set_title">Settings</string>
+    <string name="set_appearance">Lock screen appearance</string>
+    <string name="set_wallpaper_pick">Tap to choose a lock-screen image</string>
+    <string name="set_wallpaper_hint">A tall, high-resolution image works best — it will be cropped to fill</string>
+    <string name="set_wallpaper_preview">Lock-screen preview</string>
+    <string name="set_wallpaper_remove">Remove image</string>
+    <string name="set_quote">Lock-screen quote</string>
+    <string name="set_quote_hint">Write yourself a line of encouragement</string>
+    <string name="set_dark_mode">Theme</string>
+    <string name="set_theme_system">System</string>
+    <string name="set_theme_light">Light</string>
+    <string name="set_theme_dark">Dark</string>
+    <string name="set_language">Language</string>
+    <string name="set_language_system">System</string>
+    <string name="set_strict_rules">Strict mode details</string>
+    <string name="set_strict_rules_desc">These restrictions only apply to schedules with Strict mode enabled</string>
+    <string name="set_strict_settings">Block System Settings</string>
+    <string name="set_strict_settings_desc">Stops accessibility being turned off, the clock being changed, or the app being force-stopped mid-session</string>
+    <string name="set_strict_shade">Block the notification shade</string>
+    <string name="set_strict_shade_desc">Long-pressing power still gives an 8-second grace period, so shutdown and reboot work normally</string>
+    <string name="set_block_uninstall">Prevent uninstall during a lock</string>
+    <string name="set_block_uninstall_on">Active (requires device admin)</string>
+    <string name="set_block_uninstall_off">Needs device-admin permission first</string>
+    <string name="set_lock_screen_on_start">Turn the screen off when a lock starts</string>
+    <string name="set_lock_screen_on_start_desc">Straight to black, removing one second of hesitation</string>
+    <string name="set_reminders">Reminders</string>
+    <string name="set_vibrate">Vibration</string>
+    <string name="set_vibrate_desc">A short buzz when a session starts and ends</string>
+    <string name="set_emergency">Emergency unlock</string>
+    <string name="set_emergency_desc">With a password set, long-pressing the progress ring during a lock lets you enter it to end the session early. Leave it blank for no way out at all — just wait it out. A forgotten password cannot be recovered.</string>
+    <string name="set_emergency_none">Not set</string>
+    <string name="set_emergency_set">Set (%1$s)</string>
+    <string name="set_emergency_none_action">Tap to set a password</string>
+    <string name="set_emergency_set_action">Tap to change or clear</string>
+    <string name="set_emergency_pw_title">Emergency unlock password</string>
+    <string name="set_emergency_pw_hint">Leave blank to disable emergency unlock</string>
+    <string name="set_permissions">Permission centre</string>
+    <string name="set_permissions_desc">Check and request every permission a lock needs</string>
+    <string name="set_about">About</string>
+    <string name="set_about_desc">FocusLock 1.0.0 · runs locally, no network, collects nothing</string>
+
+    <!-- ==================== 权限中心 ==================== -->
+    <string name="perm_title">Permission centre</string>
+    <string name="perm_subtitle">%1$d/%2$d required permissions ready</string>
+    <string name="perm_all_ok">All required permissions are ready</string>
+    <string name="perm_all_ok_desc">Locks will start on schedule and non-whitelisted apps will be blocked</string>
+    <string name="perm_missing_desc">With permissions missing, a lock may not pop up or take effect</string>
+    <string name="perm_go">Enable</string>
+    <string name="perm_footer">Tip: phones from Xiaomi / Huawei / OPPO / vivo and others have their own autostart and background-run switches. Allow those too, otherwise the lock will be unstable.</string>
+
+    <string name="perm_accessibility_title">Accessibility service (app watcher)</string>
+    <string name="perm_accessibility_desc">Identifies which app is in the foreground during a lock and bounces anything outside the whitelist back to the lock screen. This is the core of enforcement — without it a lock only works on the honour system.</string>
+    <string name="perm_overlay_title">Display over other apps</string>
+    <string name="perm_overlay_desc">Android 10 and later forbids apps from showing UI from the background. With this permission granted, the lock screen pops up full-screen on time. Without it you only get a notification and have to tap it yourself.</string>
+    <string name="perm_notification_title">Notifications</string>
+    <string name="perm_notification_desc">Used for the persistent notification showing remaining time, and for end-of-session alerts.</string>
+    <string name="perm_alarm_title">Exact alarms</string>
+    <string name="perm_alarm_desc">Makes locks start and end on the minute. Without it the system delays alarms by a few minutes.</string>
+    <string name="perm_battery_title">Ignore battery optimisation</string>
+    <string name="perm_battery_desc">Adds the app to the battery-optimisation allowlist so the lock service isn\'t frozen or killed in the background.</string>
+    <string name="perm_usage_title">Usage access (optional)</string>
+    <string name="perm_usage_desc">A fallback signal alongside accessibility. In the vast majority of cases everything works without it.</string>
+    <string name="perm_admin_title">Device admin (optional)</string>
+    <string name="perm_admin_desc">Prevents uninstalling or force-stopping the app during a lock, making it harder to break out of.</string>
+
+    <!-- ==================== 锁屏 ==================== -->
+    <string name="lock_default_schedule_name">Focus session</string>
+    <string name="lock_remaining">Remaining</string>
+    <string name="lock_unlock_at">Unlocks at %1$s</string>
+    <string name="lock_whitelist_off">Whitelist is off</string>
+    <string name="lock_mode_strict">Strict mode</string>
+    <string name="lock_mode_normal">Normal mode</string>
+    <string name="lock_emergency_hint">Long-press the ring to enter the emergency password</string>
+    <string name="lock_stay">Please stay focused</string>
+    <string name="lock_apps_button">Whitelisted apps (%1$d)</string>
+    <string name="lock_apps_title">Whitelisted apps</string>
+    <string name="lock_apps_hint">Tap to open; press Home to come back to the lock screen</string>
+    <string name="lock_keep_going">Keep focusing</string>
+    <string name="lock_emergency_title">Emergency unlock</string>
+    <string name="lock_emergency_body">Enter the emergency password to end this session immediately. It will be recorded as "not completed".</string>
+    <string name="lock_emergency_wrong">Wrong password</string>
+    <string name="lock_emergency_do">Unlock</string>
+    <string name="lock_default_quote">Right now, this focus is a gift your future self is thanking you for.</string>
+
+    <!-- ==================== 通知 ==================== -->
+    <string name="notif_channel_alert">Lock alerts</string>
+    <string name="notif_channel_alert_desc">Lock start, end and anomaly alerts</string>
+    <string name="notif_locking_title">Focusing · %1$s</string>
+    <string name="notif_locking_text">%1$s left</string>
+    <string name="notif_locking_subtext">Locked %1$s</string>
+    <string name="notif_end_now">End session</string>
+    <string name="notif_ended_title">Session ended</string>
+    <string name="notif_ended_text">"%1$s" %2$s — well done</string>
+    <string name="notif_fallback_title">Focusing</string>
+    <string name="notif_fallback_text">Tap to return to the lock screen</string>
+    <string name="notif_accessibility_lost_title">Lock enforcement stopped</string>
+    <string name="notif_accessibility_lost_text">The accessibility service for FocusLock was turned off, so apps outside the whitelist can no longer be blocked. Please re-enable it in system settings.</string>
+
+    <!-- ==================== 结束原因 ==================== -->
+    <string name="reason_schedule_end">the time was up</string>
+    <string name="reason_master_off">the master switch was turned off</string>
+    <string name="reason_manual">you ended it manually</string>
+    <string name="reason_emergency">emergency unlock</string>
+
+    <!-- ==================== 无障碍 / 设备管理员 描述 ==================== -->
+    <string name="accessibility_label">FocusLock · App watcher</string>
+    <string name="accessibility_summary">Blocks non-whitelisted apps during a lock</string>
+    <string name="accessibility_desc">Used to identify which app is currently in the foreground during a lock session. If that app is not on the whitelist, the lock screen is brought straight back to the front. The service does not read or upload any screen content; all decisions are made on-device.</string>
+    <string name="device_admin_desc">Prevents FocusLock from being uninstalled or force-stopped during a lock session.</string>
+    <string name="device_admin_explain">Prevents "FocusLock" from being uninstalled or force-stopped during a lock session</string>
+    <string name="lock_channel_name">Lock status</string>
+    <string name="lock_channel_desc">Shows remaining time while a lock is running</string>
+
+    <plurals name="home_issues_title">
+        <item quantity="one">%1$d setup item still incomplete</item>
+        <item quantity="other">%1$d setup items still incomplete</item>
+    </plurals>
+    <plurals name="perm_still_missing">
+        <item quantity="one">%1$d required permission still missing</item>
+        <item quantity="other">%1$d required permissions still missing</item>
+    </plurals>
+    <plurals name="home_enabled_but_not_today">
+        <item quantity="one">%1$d schedule is enabled, but it does not apply today</item>
+        <item quantity="other">%1$d schedules are enabled, but none apply today</item>
+    </plurals>
+    <plurals name="home_whitelist_n">
+        <item quantity="one">%1$d whitelisted app available</item>
+        <item quantity="other">%1$d whitelisted apps available</item>
+    </plurals>
+    <plurals name="lock_whitelist_n">
+        <item quantity="one">%1$d whitelisted app available</item>
+        <item quantity="other">%1$d whitelisted apps available</item>
+    </plurals>
+    <plurals name="edit_days_n">
+        <item quantity="one">%1$d day selected</item>
+        <item quantity="other">%1$d days selected</item>
+    </plurals>
+
 </resources>

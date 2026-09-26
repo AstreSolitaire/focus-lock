@@ -35,7 +35,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.focuslock.app.R
 import com.focuslock.app.data.Schedule
 import com.focuslock.app.ui.AppViewModel
 import com.focuslock.app.ui.Screen
@@ -46,10 +49,11 @@ import com.focuslock.app.ui.components.StatusPill
 import com.focuslock.app.ui.components.ThinDivider
 import com.focuslock.app.ui.theme.Mint
 import com.focuslock.app.util.fmtDuration
-import com.focuslock.app.util.weekdayCn
+import com.focuslock.app.util.weekdayShort
 
 @Composable
 fun ScheduleListScreen(vm: AppViewModel) {
+    val ctx = LocalContext.current
     val schedules = vm.schedules
     var pendingDelete by remember { mutableStateOf<Schedule?>(null) }
 
@@ -57,22 +61,26 @@ fun ScheduleListScreen(vm: AppViewModel) {
         .sumOf { it.weeklyMinutes.toLong() } * 60_000L
 
     ScreenScaffold(
-        title = "锁机计划",
-        subtitle = "${schedules.count { it.enabled }} 条生效中 · 每周合计 ${fmtDuration(weeklyTotal)}",
+        title = stringResource(R.string.sched_title),
+        subtitle = stringResource(
+            R.string.sched_subtitle,
+            schedules.count { it.enabled },
+            fmtDuration(ctx, weeklyTotal)
+        ),
         floating = {
             FloatingActionButton(
                 onClick = { vm.push(Screen.ScheduleEdit(null)) },
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
-                Icon(Icons.Filled.Add, contentDescription = "新建计划")
+                Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.sched_new))
             }
         }
     ) { padding ->
         if (schedules.isEmpty()) {
             Column(Modifier.padding(padding).padding(horizontal = 16.dp)) {
                 EmptyState(
-                    title = "还没有锁机计划",
-                    subtitle = "点右下角新建：选择每周哪几天生效，再设定一天里的一个或多个时间段"
+                    title = stringResource(R.string.sched_empty_title),
+                    subtitle = stringResource(R.string.sched_empty_body)
                 )
             }
             return@ScreenScaffold
@@ -101,16 +109,23 @@ fun ScheduleListScreen(vm: AppViewModel) {
     pendingDelete?.let { target ->
         AlertDialog(
             onDismissRequest = { pendingDelete = null },
-            title = { Text("删除计划") },
-            text = { Text("确认删除「${target.name.ifBlank { "未命名计划" }}」？删除后不会再自动锁机。") },
+            title = { Text(stringResource(R.string.sched_delete_title)) },
+            text = {
+                Text(
+                    stringResource(
+                        R.string.sched_delete_body,
+                        target.name.ifBlank { stringResource(R.string.common_unnamed_schedule) }
+                    )
+                )
+            },
             confirmButton = {
                 TextButton(onClick = {
                     vm.deleteSchedule(target.id)
                     pendingDelete = null
-                }) { Text("删除", color = MaterialTheme.colorScheme.error) }
+                }) { Text(stringResource(R.string.common_delete), color = MaterialTheme.colorScheme.error) }
             },
             dismissButton = {
-                TextButton(onClick = { pendingDelete = null }) { Text("取消") }
+                TextButton(onClick = { pendingDelete = null }) { Text(stringResource(R.string.common_cancel)) }
             }
         )
     }
@@ -123,6 +138,7 @@ private fun ScheduleCard(
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
+    val ctx = LocalContext.current
     val dim = !schedule.enabled
 
     SectionCard(
@@ -133,14 +149,14 @@ private fun ScheduleCard(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
                 Text(
-                    schedule.name.ifBlank { "未命名计划" },
+                    schedule.name.ifBlank { stringResource(R.string.common_unnamed_schedule) },
                     style = MaterialTheme.typography.titleMedium,
                     color = if (dim) MaterialTheme.colorScheme.onSurfaceVariant
                     else MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(Modifier.height(2.dp))
                 Text(
-                    "每周 ${fmtDuration(schedule.weeklyMinutes * 60_000L)}",
+                    stringResource(R.string.sched_weekly, fmtDuration(ctx, schedule.weeklyMinutes * 60_000L)),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -149,7 +165,7 @@ private fun ScheduleCard(
             Spacer(Modifier.width(4.dp))
             Icon(
                 Icons.Filled.Delete,
-                contentDescription = "删除",
+                contentDescription = stringResource(R.string.common_delete),
                 tint = MaterialTheme.colorScheme.outline,
                 modifier = Modifier
                     .size(20.dp)
@@ -179,14 +195,14 @@ private fun ScheduleCard(
                 )
                 Spacer(Modifier.width(10.dp))
                 Text(
-                    range.label(),
+                    range.label(ctx),
                     style = MaterialTheme.typography.bodyLarge,
                     color = if (dim) MaterialTheme.colorScheme.onSurfaceVariant
                     else MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    fmtDuration(range.durationMinutes * 60_000L),
+                    fmtDuration(ctx, range.durationMinutes * 60_000L),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -196,14 +212,16 @@ private fun ScheduleCard(
         Spacer(Modifier.height(10.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             StatusPill(
-                text = if (schedule.useWhitelist) "白名单生效" else "全部拦截",
+                text = if (schedule.useWhitelist) stringResource(R.string.sched_pill_whitelist)
+                else stringResource(R.string.sched_pill_block_all),
                 container = if (schedule.useWhitelist) MaterialTheme.colorScheme.primaryContainer
                 else MaterialTheme.colorScheme.surfaceVariant,
                 content = if (schedule.useWhitelist) MaterialTheme.colorScheme.onPrimaryContainer
                 else MaterialTheme.colorScheme.onSurfaceVariant
             )
             StatusPill(
-                text = if (schedule.strict) "严格模式" else "普通模式",
+                text = if (schedule.strict) stringResource(R.string.common_strict_mode)
+                else stringResource(R.string.common_normal_mode),
                 container = if (schedule.strict) Color(0x1FEF4444) else Color(0x1F10B981),
                 content = if (schedule.strict) Color(0xFFEF4444) else Mint
             )
@@ -213,6 +231,7 @@ private fun ScheduleCard(
 
 @Composable
 fun DayStrip(days: Set<Int>, dim: Boolean = false) {
+    val ctx = LocalContext.current
     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         (1..7).forEach { d ->
             val on = d in days
@@ -230,7 +249,7 @@ fun DayStrip(days: Set<Int>, dim: Boolean = false) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = weekdayCn(d).removePrefix("周"),
+                    text = weekdayShort(ctx, d),
                     style = MaterialTheme.typography.labelMedium,
                     color = when {
                         !on -> MaterialTheme.colorScheme.onSurfaceVariant

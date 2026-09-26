@@ -40,8 +40,10 @@ import androidx.compose.ui.draw.clip
 import android.graphics.Bitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.focuslock.app.R
 import com.focuslock.app.data.AppCatalog
 import com.focuslock.app.data.AppEntry
 import com.focuslock.app.ui.AppViewModel
@@ -75,11 +77,13 @@ fun WhitelistScreen(vm: AppViewModel) {
     }
 
     ScreenScaffold(
-        title = "白名单",
-        subtitle = "锁机期间允许正常使用的应用 · 已选 ${selected.size} 个",
+        title = stringResource(R.string.wl_title),
+        subtitle = stringResource(R.string.wl_subtitle, selected.size),
         actions = {
             if (selected.isNotEmpty()) {
-                TextButton(onClick = { vm.clearWhitelist() }) { Text("清空") }
+                TextButton(onClick = { vm.clearWhitelist() }) {
+                    Text(stringResource(R.string.common_clear))
+                }
             }
         }
     ) { padding ->
@@ -98,14 +102,14 @@ fun WhitelistScreen(vm: AppViewModel) {
                         if (query.isNotEmpty()) {
                             Icon(
                                 Icons.Filled.Close,
-                                contentDescription = "清空",
+                                contentDescription = stringResource(R.string.common_clear),
                                 modifier = Modifier
                                     .size(20.dp)
                                     .clickable { query = "" }
                             )
                         }
                     },
-                    placeholder = { Text("搜索应用名或包名") },
+                    placeholder = { Text(stringResource(R.string.wl_search_hint)) },
                     keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
                         imeAction = ImeAction.Search
                     ),
@@ -116,21 +120,22 @@ fun WhitelistScreen(vm: AppViewModel) {
                     FilterChip(
                         selected = onlySelected,
                         onClick = { onlySelected = !onlySelected },
-                        label = { Text("只看已选") }
+                        label = { Text(stringResource(R.string.wl_only_selected)) }
                     )
                     FilterChip(
                         selected = showSystem,
                         onClick = { showSystem = !showSystem },
-                        label = { Text("显示系统应用") }
+                        label = { Text(stringResource(R.string.wl_show_system)) }
                     )
                 }
                 Spacer(Modifier.height(6.dp))
 
                 if (selected.isNotEmpty()) {
                     val labels = remember(selected) { AppCatalog.resolveLabels(ctx, selected) }
+                    val names = labels.values.joinToString(", ").take(80)
+                    val more = if (labels.size > 4) stringResource(R.string.wl_selected_more, labels.size) else ""
                     Text(
-                        "已选：" + labels.values.joinToString("、").take(80) +
-                            if (labels.size > 4) " 等 ${labels.size} 个" else "",
+                        stringResource(R.string.wl_selected_prefix, names) + more,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 2
@@ -140,11 +145,18 @@ fun WhitelistScreen(vm: AppViewModel) {
             }
 
             if (vm.catalogLoading) {
-                EmptyState(title = "正在读取应用列表", subtitle = "首次加载需要一点时间")
+                EmptyState(
+                    title = stringResource(R.string.wl_loading_title),
+                    subtitle = stringResource(R.string.wl_loading_body)
+                )
             } else if (filtered.isEmpty()) {
                 EmptyState(
-                    title = "没有匹配的应用",
-                    subtitle = if (vm.catalog.isEmpty()) "读取不到已安装应用，请检查权限" else "换个关键词试试"
+                    title = stringResource(R.string.wl_empty_title),
+                    subtitle = if (vm.catalog.isEmpty()) {
+                        stringResource(R.string.wl_empty_no_permission)
+                    } else {
+                        stringResource(R.string.wl_empty_try_other)
+                    }
                 )
             } else {
                 LazyColumn(
@@ -221,21 +233,21 @@ private fun AppRow(app: AppEntry, checked: Boolean, onToggle: (Boolean) -> Unit)
                     // 本机 AI 助手、系统桌面这类，选了也不生效 —— 明说，免得当成 bug
                     Spacer(Modifier.width(6.dp))
                     StatusPill(
-                        text = "锁机时仍拦住",
+                        text = stringResource(R.string.wl_pill_always_blocked),
                         container = Coral.copy(alpha = 0.15f),
                         content = Coral
                     )
                 } else if (!app.launchable) {
                     Spacer(Modifier.width(6.dp))
                     StatusPill(
-                        text = "无界面",
+                        text = stringResource(R.string.wl_pill_no_ui),
                         container = MaterialTheme.colorScheme.surfaceVariant,
                         content = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
             Text(
-                if (app.isSystem) "系统应用 · ${app.pkg}" else app.pkg,
+                if (app.isSystem) stringResource(R.string.wl_system_app, app.pkg) else app.pkg,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1

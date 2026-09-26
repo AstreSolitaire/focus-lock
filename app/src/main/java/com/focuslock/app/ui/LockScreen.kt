@@ -74,6 +74,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import com.focuslock.app.R
 import androidx.compose.ui.window.Dialog
 import com.focuslock.app.data.AppCatalog
 import com.focuslock.app.data.AppEntry
@@ -95,6 +98,9 @@ fun LockScreen(
 ) {
     val palette = LocalLockPalette.current
     val ctx = LocalContext.current
+
+    // 用户没自定义文案时，用一句跟随语言的默认话术
+    val quoteText = quote.ifBlank { stringResource(R.string.lock_default_quote) }
 
     // 白名单里可以直接打开的应用。白名单没启用或为空时不做这件事。
     val allowedApps by produceState(initialValue = emptyList<AppEntry>(), state.useWhitelist) {
@@ -166,7 +172,7 @@ fun LockScreen(
             ProgressRing(
                 progress = progress,
                 clockText = fmtClock(nowMs),
-                dateText = "${fmtDate(nowMs)} ${fmtWeekday(nowMs)}",
+                dateText = "${fmtDate(ctx, nowMs)} ${fmtWeekday(ctx, nowMs)}",
                 modifier = Modifier
                     .fillMaxWidth(0.72f)
                     .aspectRatio(1f)
@@ -184,7 +190,7 @@ fun LockScreen(
             Spacer(Modifier.height(14.dp))
 
             Text(
-                text = "预计 ${fmtClock(state.endAt)} 解锁",
+                text = stringResource(R.string.lock_unlock_at, fmtClock(state.endAt)),
                 color = palette.faint,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -205,13 +211,13 @@ fun LockScreen(
 
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     InfoTag(
-                        text = if (state.useWhitelist) "白名单 $whitelistCount 个应用可用" else "白名单已关闭"
+                        text = if (state.useWhitelist) pluralStringResource(R.plurals.lock_whitelist_n, whitelistCount, whitelistCount) else stringResource(R.string.lock_whitelist_off)
                     )
-                    InfoTag(text = if (state.strict) "严格模式" else "普通模式")
+                    InfoTag(text = if (state.strict) stringResource(R.string.common_strict_mode) else stringResource(R.string.common_normal_mode))
                 }
 
                 Text(
-                    text = quote,
+                    text = quoteText,
                     color = palette.subtitle,
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
@@ -219,7 +225,7 @@ fun LockScreen(
                 )
 
                 Text(
-                    text = if (emergencyEnabled) "长按进度环可输入紧急解锁密码" else "专注期间请勿离开",
+                    text = if (emergencyEnabled) stringResource(R.string.lock_emergency_hint) else stringResource(R.string.lock_stay),
                     color = palette.faint,
                     style = MaterialTheme.typography.labelSmall
                 )
@@ -271,7 +277,7 @@ private fun StatusChip(name: String, strict: Boolean) {
                 .background(if (strict) Color(0xFFFF6B6B) else Color(0xFF4ADEA8))
         )
         Text(
-            text = name.ifBlank { "专注中" },
+            text = name.ifBlank { stringResource(R.string.lock_default_schedule_name) },
             color = Color.White,
             style = MaterialTheme.typography.titleSmall
         )
@@ -285,6 +291,7 @@ private fun ProgressRing(
     dateText: String,
     modifier: Modifier = Modifier
 ) {
+    val ctx = LocalContext.current
     val palette = LocalLockPalette.current
     val config = LocalConfiguration.current
     val clockSize = if (config.screenHeightDp < 640) 54.sp else 68.sp
@@ -362,7 +369,7 @@ private fun RemainingPill(remainingMs: Long) {
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Text(
-            text = "剩余",
+            text = stringResource(R.string.lock_remaining),
             color = Color(0xCCFFFFFF),
             style = MaterialTheme.typography.bodyMedium
         )
@@ -398,7 +405,7 @@ private fun AllowListButton(count: Int, onClick: () -> Unit) {
             modifier = Modifier.size(18.dp)
         )
         Text(
-            "白名单应用（$count）",
+            stringResource(R.string.lock_apps_button, count),
             color = Color.White,
             style = MaterialTheme.typography.titleSmall
         )
@@ -427,14 +434,14 @@ private fun WhitelistLauncherDialog(
                 .padding(vertical = 18.dp)
         ) {
             Text(
-                "白名单应用",
+                stringResource(R.string.lock_apps_title),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(horizontal = 22.dp)
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                "点按即可打开；按 Home 键会回到锁机界面",
+                stringResource(R.string.lock_apps_hint),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 22.dp)
@@ -457,7 +464,7 @@ private fun WhitelistLauncherDialog(
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp)
             ) {
-                Text("继续专注")
+                Text(stringResource(R.string.lock_keep_going))
             }
         }
     }
@@ -540,12 +547,11 @@ private fun EmergencyDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("紧急解锁") },
+        title = { Text(stringResource(R.string.lock_emergency_title)) },
         text = {
             Column {
                 Text(
-                    "输入你设置的紧急密码可以立刻结束本次锁机，" +
-                        "这次记录会被标记为「未完成」。",
+                    stringResource(R.string.lock_emergency_body),
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(Modifier.height(14.dp))
@@ -570,7 +576,7 @@ private fun EmergencyDialog(
                 if (error) {
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        "密码不正确",
+                        stringResource(R.string.lock_emergency_wrong),
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodySmall
                     )
@@ -580,10 +586,10 @@ private fun EmergencyDialog(
         confirmButton = {
             TextButton(onClick = {
                 if (!onConfirm(input)) error = true
-            }) { Text("解锁") }
+            }) { Text(stringResource(R.string.lock_emergency_do)) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("继续专注") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.lock_keep_going)) }
         }
     )
 }

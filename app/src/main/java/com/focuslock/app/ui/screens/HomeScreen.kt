@@ -38,6 +38,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import com.focuslock.app.R
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -92,22 +95,22 @@ fun HomeScreen(vm: AppViewModel) {
 
     val issues = remember(minuteBucket) {
         val list = mutableListOf<String>()
-        if (!PermissionChecks.accessibility(ctx)) list += "无障碍服务未开启"
-        if (!PermissionChecks.overlay(ctx)) list += "悬浮窗权限未授予"
-        if (!PermissionChecks.exactAlarm(ctx)) list += "精确闹钟未授权"
-        if (!PermissionChecks.batteryUnrestricted(ctx)) list += "未加入电池优化白名单"
+        if (!PermissionChecks.accessibility(ctx)) list += ctx.getString(R.string.home_issue_accessibility)
+        if (!PermissionChecks.overlay(ctx)) list += ctx.getString(R.string.home_issue_overlay)
+        if (!PermissionChecks.exactAlarm(ctx)) list += ctx.getString(R.string.home_issue_alarm)
+        if (!PermissionChecks.batteryUnrestricted(ctx)) list += ctx.getString(R.string.home_issue_battery)
         list
     }
 
     ScreenScaffold(
-        title = "专注锁机",
-        subtitle = "${fmtDateFull(now)} ${fmtWeekday(now)}",
+        title = stringResource(R.string.app_title),
+        subtitle = "${fmtDateFull(ctx, now)} ${fmtWeekday(ctx, now)}",
         actions = {
             IconButton(onClick = { vm.popAll(); vm.push(Screen.Permissions) }) {
-                Icon(Icons.Filled.Warning, contentDescription = "权限检查")
+                Icon(Icons.Filled.Warning, contentDescription = stringResource(R.string.home_check_permissions))
             }
             IconButton(onClick = { vm.popAll(); vm.push(Screen.Settings) }) {
-                Icon(Icons.Filled.Settings, contentDescription = "设置")
+                Icon(Icons.Filled.Settings, contentDescription = stringResource(R.string.common_settings))
             }
         }
     ) { padding ->
@@ -147,9 +150,9 @@ fun HomeScreen(vm: AppViewModel) {
             SectionCard {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
-                        Text("锁机总开关", style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(R.string.home_master_switch), style = MaterialTheme.typography.titleMedium)
                         Text(
-                            if (vm.masterEnabled) "到点会自动锁机" else "已暂停，所有计划都不生效",
+                            if (vm.masterEnabled) stringResource(R.string.home_master_on) else stringResource(R.string.home_master_off),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -176,7 +179,7 @@ fun HomeScreen(vm: AppViewModel) {
                         )
                         Spacer(Modifier.width(10.dp))
                         Text(
-                            "还有 ${issues.size} 项设置未完成",
+                            pluralStringResource(R.plurals.home_issues_title, issues.size, issues.size),
                             style = MaterialTheme.typography.titleSmall,
                             color = Amber
                         )
@@ -188,7 +191,7 @@ fun HomeScreen(vm: AppViewModel) {
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     TextButton(onClick = { vm.popAll(); vm.push(Screen.Permissions) }) {
-                        Text("去完成设置")
+                        Text(stringResource(R.string.home_issues_action))
                     }
                 }
             }
@@ -196,9 +199,9 @@ fun HomeScreen(vm: AppViewModel) {
             // ---------------------------------------------------- 今日时间轴
             Spacer(Modifier.height(12.dp))
             SectionCard {
-                CardTitle("今日时间轴") {
+                CardTitle(stringResource(R.string.home_timeline)) {
                     Text(
-                        fmtDuration(today.sumOf { it.end - it.start }),
+                        fmtDuration(ctx, today.sumOf { it.end - it.start }),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -206,8 +209,8 @@ fun HomeScreen(vm: AppViewModel) {
                 Spacer(Modifier.height(10.dp))
                 if (today.isEmpty()) {
                     EmptyState(
-                        title = "今天没有锁机安排",
-                        subtitle = "到「计划」页新建一条，或选择需要生效的星期几"
+                        title = stringResource(R.string.home_timeline_empty_title),
+                        subtitle = stringResource(R.string.home_timeline_empty_body)
                     )
                 } else {
                     today.forEach { interval ->
@@ -224,10 +227,10 @@ fun HomeScreen(vm: AppViewModel) {
             // ---------------------------------------------------- 手动专注
             Spacer(Modifier.height(12.dp))
             SectionCard {
-                CardTitle("立即专注")
+                CardTitle(stringResource(R.string.home_quick_focus))
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    "不等计划，现在就开始一段锁机（不启用严格模式，可随时结束）",
+                    stringResource(R.string.home_quick_focus_hint),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -250,9 +253,9 @@ fun HomeScreen(vm: AppViewModel) {
             // ---------------------------------------------------- 统计速览
             Spacer(Modifier.height(12.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                StatBadge("今日", fmtDuration(stats.todayMs), Modifier.weight(1f))
-                StatBadge("本周", fmtDuration(stats.weekMs), Modifier.weight(1f))
-                StatBadge("累计", fmtDuration(stats.totalMs), Modifier.weight(1f))
+                StatBadge(stringResource(R.string.home_stat_today), fmtDuration(ctx, stats.todayMs), Modifier.weight(1f))
+                StatBadge(stringResource(R.string.home_stat_week), fmtDuration(ctx, stats.weekMs), Modifier.weight(1f))
+                StatBadge(stringResource(R.string.home_stat_total), fmtDuration(ctx, stats.totalMs), Modifier.weight(1f))
             }
 
             Spacer(Modifier.height(28.dp))
@@ -284,7 +287,7 @@ private fun LockingCard(
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 StatusPill(
-                    text = "锁机中",
+                    text = stringResource(R.string.home_state_locked),
                     container = Color(0x33FFFFFF)
                 )
                 Spacer(Modifier.width(8.dp))
@@ -304,21 +307,25 @@ private fun LockingCard(
             )
             Spacer(Modifier.height(6.dp))
             Text(
-                "${fmtClock(endAt)} 自动解锁 · " +
-                    if (useWhitelist) "白名单 $whitelistCount 个应用可用" else "仅系统必需应用可用",
+                stringResource(R.string.home_unlock_at, fmtClock(endAt)) + " · " +
+                    if (useWhitelist) {
+                        pluralStringResource(R.plurals.home_whitelist_n, whitelistCount, whitelistCount)
+                    } else {
+                        stringResource(R.string.home_essentials_only)
+                    },
                 style = MaterialTheme.typography.bodySmall,
                 color = Color(0xCCFFFFFF)
             )
             Spacer(Modifier.height(14.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 StatusPill(
-                    text = if (strict) "严格模式" else "普通模式",
+                    text = if (strict) stringResource(R.string.common_strict_mode) else stringResource(R.string.common_normal_mode),
                     container = Color(0x26FFFFFF)
                 )
                 Spacer(Modifier.weight(1f))
                 if (!strict) {
                     TextButton(onClick = onEnd) {
-                        Text("结束本次", color = Color.White)
+                        Text(stringResource(R.string.home_end_now), color = Color.White)
                     }
                 }
             }
@@ -334,17 +341,18 @@ private fun IdleCard(
     now: Long,
     totalEnabled: Int
 ) {
+    val ctx = LocalContext.current
     SectionCard {
         Column {
             StatusPill(
-                text = "未锁机",
+                text = stringResource(R.string.home_state_idle),
                 container = Mint.copy(alpha = 0.15f),
                 content = Mint
             )
             Spacer(Modifier.height(14.dp))
             if (nextStart != null) {
                 Text(
-                    "距下次锁机",
+                    stringResource(R.string.home_until_next),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -357,19 +365,19 @@ private fun IdleCard(
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    "${nextName.orEmpty()} · ${fmtNextHint(nextStart)} 开始，${fmtClock(nextEnd ?: nextStart)} 结束",
+                    stringResource(R.string.home_next_detail, nextName.orEmpty(), fmtNextHint(ctx, nextStart), fmtClock(nextEnd ?: nextStart)),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             } else {
                 Text(
-                    "近期没有锁机安排",
+                    stringResource(R.string.home_no_upcoming),
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    if (totalEnabled == 0) "当前没有启用中的计划，去「计划」页新建一条吧"
-                    else "已启用 $totalEnabled 条计划，但今天不生效",
+                    if (totalEnabled == 0) stringResource(R.string.home_no_enabled)
+                    else pluralStringResource(R.plurals.home_enabled_but_not_today, totalEnabled, totalEnabled),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -380,15 +388,16 @@ private fun IdleCard(
 
 @Composable
 private fun TimelineRow(name: String, start: Long, end: Long, now: Long) {
+    val ctx = LocalContext.current
     val state = when {
         now >= end -> 0
         now >= start -> 1
         else -> 2
     }
     val (label, color) = when (state) {
-        0 -> "已结束" to MaterialTheme.colorScheme.onSurfaceVariant
-        1 -> "进行中" to Coral
-        else -> "待开始" to MaterialTheme.colorScheme.primary
+        0 -> stringResource(R.string.home_status_done) to MaterialTheme.colorScheme.onSurfaceVariant
+        1 -> stringResource(R.string.home_status_active) to Coral
+        else -> stringResource(R.string.home_status_upcoming) to MaterialTheme.colorScheme.primary
     }
     Row(
         modifier = Modifier
@@ -404,9 +413,9 @@ private fun TimelineRow(name: String, start: Long, end: Long, now: Long) {
         )
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(name.ifBlank { "未命名计划" }, style = MaterialTheme.typography.bodyLarge)
+            Text(name.ifBlank { stringResource(R.string.common_unnamed_schedule) }, style = MaterialTheme.typography.bodyLarge)
             Text(
-                "${fmtClock(start)} - ${fmtClock(end)} · ${fmtDuration(end - start)}",
+                "${fmtClock(start)} - ${fmtClock(end)} · ${fmtDuration(ctx, end - start)}",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -438,7 +447,7 @@ private fun QuickStartChip(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "$minutes 分钟",
+            text = stringResource(R.string.common_minutes, minutes),
             style = MaterialTheme.typography.labelLarge,
             maxLines = 1,
             softWrap = false,

@@ -27,9 +27,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.focuslock.app.R
 import com.focuslock.app.data.DayStat
 import com.focuslock.app.data.StatsStore
 import com.focuslock.app.ui.AppViewModel
@@ -46,7 +49,7 @@ import com.focuslock.app.ui.theme.Mint
 import com.focuslock.app.util.fmtClock
 import com.focuslock.app.util.fmtDate
 import com.focuslock.app.util.fmtDuration
-import com.focuslock.app.util.weekdayCn
+import com.focuslock.app.util.weekdayShort
 
 @Composable
 fun StatsScreen(vm: AppViewModel) {
@@ -54,10 +57,13 @@ fun StatsScreen(vm: AppViewModel) {
     var confirmClear by remember { mutableStateOf(false) }
 
     val best = stats.days.maxByOrNull { it.ms }
+    val ctx = LocalContext.current
 
     ScreenScaffold(
-        title = "锁机数据",
-        subtitle = if (stats.totalMs > 0) "累计专注 ${fmtDuration(stats.totalMs)}" else "还没有记录"
+        title = stringResource(R.string.stats_title),
+        subtitle = if (stats.totalMs > 0)
+            stringResource(R.string.stats_subtitle, fmtDuration(ctx, stats.totalMs))
+        else stringResource(R.string.stats_subtitle_empty)
     ) { padding ->
         Column(
             modifier = Modifier
@@ -69,22 +75,22 @@ fun StatsScreen(vm: AppViewModel) {
             Spacer(Modifier.height(4.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                StatBadge("今日", fmtDuration(stats.todayMs), Modifier.weight(1f))
-                StatBadge("本周", fmtDuration(stats.weekMs), Modifier.weight(1f))
+                StatBadge(stringResource(R.string.home_stat_today), fmtDuration(ctx, stats.todayMs), Modifier.weight(1f))
+                StatBadge(stringResource(R.string.home_stat_week), fmtDuration(ctx, stats.weekMs), Modifier.weight(1f))
             }
             Spacer(Modifier.height(10.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                StatBadge("本月", fmtDuration(stats.monthMs), Modifier.weight(1f))
-                StatBadge("累计", fmtDuration(stats.totalMs), Modifier.weight(1f))
+                StatBadge(stringResource(R.string.stats_month), fmtDuration(ctx, stats.monthMs), Modifier.weight(1f))
+                StatBadge(stringResource(R.string.home_stat_total), fmtDuration(ctx, stats.totalMs), Modifier.weight(1f))
             }
 
             Spacer(Modifier.height(12.dp))
 
             SectionCard {
-                CardTitle("最近 7 天") {
+                CardTitle(stringResource(R.string.stats_last7)) {
                     if (best != null && best.ms > 0) {
                         Text(
-                            "最佳 ${fmtDuration(best.ms)}",
+                            stringResource(R.string.stats_best, fmtDuration(ctx, best.ms)),
                             style = MaterialTheme.typography.labelMedium,
                             color = Amber
                         )
@@ -97,9 +103,9 @@ fun StatsScreen(vm: AppViewModel) {
             Spacer(Modifier.height(12.dp))
 
             SectionCard {
-                CardTitle("锁机记录") {
+                CardTitle(stringResource(R.string.stats_sessions)) {
                     Text(
-                        "${stats.recent.size} 条",
+                        stringResource(R.string.stats_count, stats.recent.size),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -107,8 +113,8 @@ fun StatsScreen(vm: AppViewModel) {
                 Spacer(Modifier.height(8.dp))
                 if (stats.recent.isEmpty()) {
                     EmptyState(
-                        title = "还没有完成过锁机",
-                        subtitle = "锁机到点结束后，这里会留下每一次的记录"
+                        title = stringResource(R.string.stats_empty_title),
+                        subtitle = stringResource(R.string.stats_empty_body)
                     )
                 } else {
                     stats.recent.take(20).forEachIndexed { index, log ->
@@ -120,23 +126,24 @@ fun StatsScreen(vm: AppViewModel) {
                         ) {
                             Column(Modifier.weight(1f)) {
                                 Text(
-                                    "${fmtDate(log.startAt)} ${fmtClock(log.startAt)} - ${fmtClock(log.endAt)}",
+                                    "${fmtDate(ctx, log.startAt)} ${fmtClock(log.startAt)} - ${fmtClock(log.endAt)}",
                                     style = MaterialTheme.typography.bodyMedium
                                 )
                                 Text(
-                                    log.scheduleName.ifBlank { "未命名计划" },
+                                    log.scheduleName.ifBlank { stringResource(R.string.common_unnamed_schedule) },
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                             Text(
-                                fmtDuration(log.durationMs),
+                                fmtDuration(ctx, log.durationMs),
                                 style = MaterialTheme.typography.titleSmall,
                                 fontWeight = FontWeight.SemiBold
                             )
                             Spacer(Modifier.width(8.dp))
                             StatusPill(
-                                text = if (log.completed) "完成" else "中断",
+                                text = if (log.completed) stringResource(R.string.stats_done)
+                                else stringResource(R.string.stats_interrupted),
                                 container = if (log.completed) Mint.copy(alpha = 0.15f)
                                 else Coral.copy(alpha = 0.15f),
                                 content = if (log.completed) Mint else Coral
@@ -153,7 +160,7 @@ fun StatsScreen(vm: AppViewModel) {
                 onClick = { confirmClear = true },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("清空全部统计数据", color = MaterialTheme.colorScheme.error)
+                Text(stringResource(R.string.stats_clear), color = MaterialTheme.colorScheme.error)
             }
 
             Spacer(Modifier.height(32.dp))
@@ -163,17 +170,17 @@ fun StatsScreen(vm: AppViewModel) {
     if (confirmClear) {
         AlertDialog(
             onDismissRequest = { confirmClear = false },
-            title = { Text("清空统计数据") },
-            text = { Text("累计时长与全部锁机记录都会被删除，计划与白名单不受影响。") },
+            title = { Text(stringResource(R.string.stats_clear_title)) },
+            text = { Text(stringResource(R.string.stats_clear_body)) },
             confirmButton = {
                 TextButton(onClick = {
                     StatsStore.clearAll()
                     vm.refreshStats()
                     confirmClear = false
-                }) { Text("清空", color = MaterialTheme.colorScheme.error) }
+                }) { Text(stringResource(R.string.common_clear), color = MaterialTheme.colorScheme.error) }
             },
             dismissButton = {
-                TextButton(onClick = { confirmClear = false }) { Text("取消") }
+                TextButton(onClick = { confirmClear = false }) { Text(stringResource(R.string.common_cancel)) }
             }
         )
     }
@@ -181,6 +188,7 @@ fun StatsScreen(vm: AppViewModel) {
 
 @Composable
 private fun WeekChart(days: List<DayStat>) {
+    val ctx = LocalContext.current
     val maxMs = remember(days) { days.maxOfOrNull { it.ms }?.coerceAtLeast(1L) ?: 1L }
     val today = remember { java.time.LocalDate.now() }
 
@@ -236,7 +244,7 @@ private fun WeekChart(days: List<DayStat>) {
                 )
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    weekdayCn(day.date.dayOfWeek.value).removePrefix("周"),
+                    weekdayShort(ctx, day.date.dayOfWeek.value),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = if (isToday) FontWeight.Bold else FontWeight.Normal,
                     color = if (isToday) MaterialTheme.colorScheme.primary

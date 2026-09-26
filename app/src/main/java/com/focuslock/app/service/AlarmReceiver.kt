@@ -3,6 +3,7 @@ package com.focuslock.app.service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.focuslock.app.R
 import android.util.Log
 import com.focuslock.app.logic.AlarmScheduler
 import com.focuslock.app.logic.LockController
@@ -52,7 +53,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
             AlarmScheduler.ACTION_END_NOW -> {
                 // 只有非严格模式的常驻通知才会挂这个入口
-                LockController.forceEnd(context, "用户手动结束")
+                LockController.forceEnd(context, R.string.reason_manual)
             }
         }
     }

@@ -51,10 +51,10 @@ object Notifications {
             nm.createNotificationChannel(
                 NotificationChannel(
                     CH_ALERT,
-                    "锁机提醒",
+                    ctx.getString(R.string.notif_channel_alert),
                     NotificationManager.IMPORTANCE_DEFAULT
                 ).apply {
-                    description = "锁机开始、结束与异常提醒"
+                    description = ctx.getString(R.string.notif_channel_alert_desc)
                     setShowBadge(true)
                 }
             )
@@ -79,7 +79,12 @@ object Notifications {
         )
 
     /** 锁机进行中的常驻通知 */
-    fun buildLockNotification(ctx: Context, scheduleName: String, remainingMs: Long, strict: Boolean): Notification {
+    fun buildLockNotification(
+        ctx: Context,
+        scheduleName: String,
+        remainingMs: Long,
+        strict: Boolean
+    ): Notification {
         val open = PendingIntent.getActivity(
             ctx,
             3,
@@ -88,9 +93,14 @@ object Notifications {
         )
         val builder = NotificationCompat.Builder(ctx, CH_LOCK)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("专注中 · $scheduleName")
-            .setContentText("剩余 ${fmtCountdown(remainingMs)}")
-            .setSubText("已锁 ${fmtDuration(LockRuntime.session?.durMs ?: 0L)}")
+            .setContentTitle(ctx.getString(R.string.notif_locking_title, scheduleName))
+            .setContentText(ctx.getString(R.string.notif_locking_text, fmtCountdown(remainingMs)))
+            .setSubText(
+                ctx.getString(
+                    R.string.notif_locking_subtext,
+                    fmtDuration(ctx, LockRuntime.session?.durMs ?: 0L)
+                )
+            )
             .setOngoing(true)
             .setShowWhen(false)
             .setOnlyAlertOnce(true)
@@ -110,7 +120,7 @@ object Notifications {
                 },
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
-            builder.addAction(R.drawable.ic_notification, "结束锁机", end)
+            builder.addAction(R.drawable.ic_notification, ctx.getString(R.string.notif_end_now), end)
         }
         return builder.build()
     }
@@ -127,8 +137,8 @@ object Notifications {
         if (!hasPermission(ctx)) return
         val n = NotificationCompat.Builder(ctx, CH_ALERT)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("锁机已结束")
-            .setContentText("「$scheduleName」$reason，辛苦了")
+            .setContentTitle(ctx.getString(R.string.notif_ended_title))
+            .setContentText(ctx.getString(R.string.notif_ended_text, scheduleName, reason))
             .setAutoCancel(true)
             .setContentIntent(mainPending(ctx))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -150,6 +160,14 @@ object Notifications {
         runCatching { NotificationManagerCompat.from(ctx).notify(ID_ALERT, n) }
     }
 
+    fun notifyAccessibilityLost(ctx: Context) {
+        notifyWarning(
+            ctx,
+            ctx.getString(R.string.notif_accessibility_lost_title),
+            ctx.getString(R.string.notif_accessibility_lost_text)
+        )
+    }
+
     fun cancelLock(ctx: Context) {
         runCatching { NotificationManagerCompat.from(ctx).cancel(ID_LOCK) }
     }
@@ -167,8 +185,8 @@ object Notifications {
         )
         val n = NotificationCompat.Builder(ctx, CH_LOCK)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("专注中")
-            .setContentText("点按返回锁机界面")
+            .setContentTitle(ctx.getString(R.string.notif_fallback_title))
+            .setContentText(ctx.getString(R.string.notif_fallback_text))
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setCategory(NotificationCompat.CATEGORY_ALARM)

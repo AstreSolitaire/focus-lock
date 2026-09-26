@@ -40,11 +40,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.focuslock.app.R
 import com.focuslock.app.ui.AppViewModel
 import com.focuslock.app.ui.Screen
 import com.focuslock.app.ui.components.CardTitle
@@ -78,7 +80,7 @@ fun SettingsScreen(vm: AppViewModel) {
     var showPasswordDialog by remember { mutableStateOf(false) }
 
     ScreenScaffold(
-        title = "设置",
+        title = stringResource(R.string.set_title),
         onBack = { vm.pop() }
     ) { padding ->
         Column(
@@ -92,7 +94,7 @@ fun SettingsScreen(vm: AppViewModel) {
 
             // -------------------------------------------- 锁屏外观
             SectionCard {
-                CardTitle("锁屏外观")
+                CardTitle(stringResource(R.string.set_appearance))
                 Spacer(Modifier.height(12.dp))
 
                 Box(
@@ -106,10 +108,10 @@ fun SettingsScreen(vm: AppViewModel) {
                 ) {
                     if (vm.wallpaperUri.isNullOrBlank()) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("点击选择锁屏背景图", style = MaterialTheme.typography.bodyMedium)
+                            Text(stringResource(R.string.set_wallpaper_pick), style = MaterialTheme.typography.bodyMedium)
                             Spacer(Modifier.height(4.dp))
                             Text(
-                                "建议竖版高清图，会自动裁切铺满",
+                                stringResource(R.string.set_wallpaper_hint),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -117,7 +119,7 @@ fun SettingsScreen(vm: AppViewModel) {
                     } else {
                         AsyncImage(
                             model = vm.wallpaperUri,
-                            contentDescription = "锁屏背景预览",
+                            contentDescription = stringResource(R.string.set_wallpaper_preview),
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
                         )
@@ -136,7 +138,7 @@ fun SettingsScreen(vm: AppViewModel) {
                         )
                         Spacer(Modifier.size(6.dp))
                         TextButton(onClick = { vm.setWallpaper(null) }) {
-                            Text("移除背景图", color = MaterialTheme.colorScheme.error)
+                            Text(stringResource(R.string.set_wallpaper_remove), color = MaterialTheme.colorScheme.error)
                         }
                     }
                 }
@@ -144,7 +146,7 @@ fun SettingsScreen(vm: AppViewModel) {
                 Spacer(Modifier.height(8.dp))
                 ThinDivider()
                 ClickRow(
-                    title = "锁屏文案",
+                    title = stringResource(R.string.set_quote),
                     value = vm.lockQuote.take(10) + if (vm.lockQuote.length > 10) "…" else "",
                     onClick = {
                         quoteDraft = vm.lockQuote
@@ -154,13 +156,40 @@ fun SettingsScreen(vm: AppViewModel) {
                 ThinDivider()
 
                 Spacer(Modifier.height(12.dp))
-                Text("深色模式", style = MaterialTheme.typography.bodyLarge)
+                Text(stringResource(R.string.set_dark_mode), style = MaterialTheme.typography.bodyLarge)
                 Spacer(Modifier.height(8.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    listOf("跟随系统" to 0, "浅色" to 1, "深色" to 2).forEach { (label, mode) ->
+                    listOf(
+                        stringResource(R.string.set_theme_system) to 0,
+                        stringResource(R.string.set_theme_light) to 1,
+                        stringResource(R.string.set_theme_dark) to 2
+                    ).forEach { (label, mode) ->
                         FilterChip(
                             selected = vm.themeMode == mode,
                             onClick = { vm.updateThemeMode(mode) },
+                            label = { Text(label) }
+                        )
+                    }
+                }
+
+                Spacer(Modifier.height(16.dp))
+                ThinDivider()
+                Spacer(Modifier.height(12.dp))
+
+                // 语言名按惯例用各自的语言书写，不翻译
+                val currentLang = vm.appLanguage.let { vm.languageRevision; it }
+                Text(stringResource(R.string.set_language), style = MaterialTheme.typography.bodyLarge)
+                Spacer(Modifier.height(8.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    listOf(
+                        stringResource(R.string.set_language_system) to "",
+                        "简体中文" to "zh-CN",
+                        "English" to "en"
+                    ).forEach { (label, tag) ->
+                        FilterChip(
+                            selected = currentLang.equals(tag, ignoreCase = true) ||
+                                (tag.isEmpty() && currentLang.isEmpty()),
+                            onClick = { vm.updateAppLanguage(tag) },
                             label = { Text(label) }
                         )
                     }
@@ -170,42 +199,42 @@ fun SettingsScreen(vm: AppViewModel) {
             // -------------------------------------------- 严格模式
             Spacer(Modifier.height(12.dp))
             SectionCard {
-                CardTitle("严格模式细则")
+                CardTitle(stringResource(R.string.set_strict_rules))
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    "只有「严格模式」的计划才会应用以下限制",
+                    stringResource(R.string.set_strict_rules_desc),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(Modifier.height(8.dp))
                 SwitchRow(
-                    title = "屏蔽「系统设置」",
-                    subtitle = "防止在锁机期间关闭无障碍、修改系统时间或强行停止本应用",
+                    title = stringResource(R.string.set_strict_settings),
+                    subtitle = stringResource(R.string.set_strict_settings_desc),
                     checked = vm.strictBlockSettings,
                     onCheckedChange = { vm.updateStrictBlockSettings(it) }
                 )
                 ThinDivider()
                 SwitchRow(
-                    title = "屏蔽下拉通知栏",
-                    subtitle = "长按电源键会有 8 秒宽限期，保证能正常关机 / 重启",
+                    title = stringResource(R.string.set_strict_shade),
+                    subtitle = stringResource(R.string.set_strict_shade_desc),
                     checked = vm.strictBlockShade,
                     onCheckedChange = { vm.updateStrictBlockShade(it) }
                 )
                 ThinDivider()
                 SwitchRow(
-                    title = "锁机期间阻止卸载",
+                    title = stringResource(R.string.set_block_uninstall),
                     subtitle = if (PermissionChecks.deviceAdmin(ctx)) {
-                        "已生效（需设备管理员权限）"
+                        stringResource(R.string.set_block_uninstall_on)
                     } else {
-                        "需要先授予设备管理员权限"
+                        stringResource(R.string.set_block_uninstall_off)
                     },
                     checked = vm.blockUninstall,
                     onCheckedChange = { vm.updateBlockUninstall(it) }
                 )
                 ThinDivider()
                 SwitchRow(
-                    title = "锁机开始时熄屏",
-                    subtitle = "到点直接黑屏，减少一秒钟的犹豫",
+                    title = stringResource(R.string.set_lock_screen_on_start),
+                    subtitle = stringResource(R.string.set_lock_screen_on_start_desc),
                     checked = vm.lockScreenOnStart,
                     onCheckedChange = { vm.updateLockScreenOnStart(it) }
                 )
@@ -214,10 +243,10 @@ fun SettingsScreen(vm: AppViewModel) {
             // -------------------------------------------- 提醒
             Spacer(Modifier.height(12.dp))
             SectionCard {
-                CardTitle("提醒")
+                CardTitle(stringResource(R.string.set_reminders))
                 SwitchRow(
-                    title = "震动提示",
-                    subtitle = "锁机开始与结束时各震一下",
+                    title = stringResource(R.string.set_vibrate),
+                    subtitle = stringResource(R.string.set_vibrate_desc),
                     checked = vm.vibrate,
                     onCheckedChange = { vm.updateVibrate(it) }
                 )
@@ -226,18 +255,22 @@ fun SettingsScreen(vm: AppViewModel) {
             // -------------------------------------------- 紧急解锁
             Spacer(Modifier.height(12.dp))
             SectionCard {
-                CardTitle("紧急解锁")
+                CardTitle(stringResource(R.string.set_emergency))
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    "设置一个密码后，锁机期间长按锁屏进度环可以输入密码提前结束。" +
-                        "留空表示完全不给出口，只能等时间走完。密码忘记无法找回。",
+                    stringResource(R.string.set_emergency_desc),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(Modifier.height(8.dp))
                 ClickRow(
-                    title = if (vm.emergencyPassword.isBlank()) "未设置" else "已设置（${"•".repeat(vm.emergencyPassword.length.coerceAtMost(8))}）",
-                    subtitle = if (vm.emergencyPassword.isBlank()) "点按设置密码" else "点按修改或清除",
+                    title = if (vm.emergencyPassword.isBlank()) stringResource(R.string.set_emergency_none)
+                    else stringResource(
+                        R.string.set_emergency_set,
+                        "•".repeat(vm.emergencyPassword.length.coerceAtMost(8))
+                    ),
+                    subtitle = if (vm.emergencyPassword.isBlank()) stringResource(R.string.set_emergency_none_action)
+                    else stringResource(R.string.set_emergency_set_action),
                     showArrow = false,
                     onClick = { showPasswordDialog = true }
                 )
@@ -247,14 +280,14 @@ fun SettingsScreen(vm: AppViewModel) {
             Spacer(Modifier.height(12.dp))
             SectionCard {
                 ClickRow(
-                    title = "权限中心",
-                    subtitle = "逐项检查并申请锁机所需的全部权限",
+                    title = stringResource(R.string.set_permissions),
+                    subtitle = stringResource(R.string.set_permissions_desc),
                     onClick = { vm.push(Screen.Permissions) }
                 )
                 ThinDivider()
                 ClickRow(
-                    title = "关于",
-                    subtitle = "专注锁机 1.0.0 · 本地运行，不联网，不上传任何数据",
+                    title = stringResource(R.string.set_about),
+                    subtitle = stringResource(R.string.set_about_desc),
                     showArrow = false,
                     onClick = { }
                 )
@@ -266,12 +299,12 @@ fun SettingsScreen(vm: AppViewModel) {
 
     if (showQuoteDialog) {
         TextInputDialog(
-            title = "锁屏文案",
+            title = stringResource(R.string.set_quote),
             initial = quoteDraft,
-            placeholder = "写一句鼓励自己的话",
+            placeholder = stringResource(R.string.set_quote_hint),
             onDismiss = { showQuoteDialog = false },
             onConfirm = {
-                vm.setQuote(it.ifBlank { com.focuslock.app.data.Prefs.DEFAULT_QUOTE })
+                vm.setQuote(it.trim())
                 showQuoteDialog = false
             }
         )
@@ -279,9 +312,9 @@ fun SettingsScreen(vm: AppViewModel) {
 
     if (showPasswordDialog) {
         TextInputDialog(
-            title = "紧急解锁密码",
+            title = stringResource(R.string.set_emergency_pw_title),
             initial = vm.emergencyPassword,
-            placeholder = "留空表示取消紧急解锁",
+            placeholder = stringResource(R.string.set_emergency_pw_hint),
             onDismiss = { showPasswordDialog = false },
             onConfirm = {
                 vm.updateEmergencyPassword(it.trim())
@@ -329,10 +362,10 @@ private fun TextInputDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = { onConfirm(value) }) { Text("保存", fontWeight = FontWeight.SemiBold) }
+            TextButton(onClick = { onConfirm(value) }) { Text(stringResource(R.string.common_save), fontWeight = FontWeight.SemiBold) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("取消") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.common_cancel)) }
         }
     )
 }

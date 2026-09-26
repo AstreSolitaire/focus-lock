@@ -1,6 +1,8 @@
 package com.focuslock.app.logic
 
 import android.content.Context
+import androidx.annotation.StringRes
+import com.focuslock.app.R
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
@@ -71,7 +73,7 @@ object LockController {
         Prefs.observeWall(now)
 
         if (!Prefs.masterEnabled) {
-            if (LockRuntime.isLocked) endLock(ctx, "总开关已关闭", completed = false)
+            if (LockRuntime.isLocked) endLock(ctx, R.string.reason_master_off, completed = false)
             AlarmScheduler.cancelAll(ctx)
             ServiceLauncher.stopLockService(ctx)
             return
@@ -81,7 +83,7 @@ object LockController {
         if (current != null) {
             val remain = remainingOf(ctx, current)
             if (remain <= 0L) {
-                endLock(ctx, "时段结束", completed = true)
+                endLock(ctx, R.string.reason_schedule_end, completed = true)
                 evaluate(ctx, "结束后重排")
                 return
             }
@@ -151,7 +153,8 @@ object LockController {
 
     // ------------------------------------------------------------------ 结束
 
-    fun endLock(ctx: Context, reason: String, completed: Boolean) {
+    fun endLock(ctx: Context, @StringRes reasonRes: Int, completed: Boolean) {
+        val reason = ctx.getString(reasonRes)
         val s = LockRuntime.session
         val now = System.currentTimeMillis()
         if (s != null) {
@@ -171,8 +174,8 @@ object LockController {
     }
 
     /** 手动立刻结束（仅非严格模式提供，或紧急解锁校验通过后） */
-    fun forceEnd(ctx: Context, reason: String) {
-        endLock(ctx, reason, completed = false)
+    fun forceEnd(ctx: Context, @StringRes reasonRes: Int) {
+        endLock(ctx, reasonRes, completed = false)
         evaluate(ctx, "强制结束后重排")
     }
 
@@ -186,7 +189,7 @@ object LockController {
         Prefs.observeWall(System.currentTimeMillis())
         val remain = remainingOf(ctx, s)
         if (remain <= 0L) {
-            endLock(ctx, "时段结束", completed = true)
+            endLock(ctx, R.string.reason_schedule_end, completed = true)
             evaluate(ctx, "结束后重排")
             return false
         }

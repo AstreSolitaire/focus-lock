@@ -79,9 +79,9 @@ object Prefs {
         get() = safeSp()?.getString(KEY_WALLPAPER, null)
         set(v) { safeSp()?.edit()?.putString(KEY_WALLPAPER, v)?.apply() }
 
-    /** 锁屏文案 */
+    /** 锁屏文案。空串表示「用语言相关的那句默认文案」。 */
     var lockQuote: String
-        get() = safeSp()?.getString(KEY_QUOTE, DEFAULT_QUOTE) ?: DEFAULT_QUOTE
+        get() = safeSp()?.getString(KEY_QUOTE, "").orEmpty()
         set(v) { safeSp()?.edit()?.putString(KEY_QUOTE, v)?.apply() }
 
     var showFloatingClock: Boolean
@@ -226,7 +226,7 @@ object Prefs {
         } ?: emptyList()
         return Schedule(
             id = o.optString("id").ifBlank { UUID.randomUUID().toString().take(8) },
-            name = o.optString("name", "未命名计划"),
+            name = o.optString("name", ""),
             enabled = o.optBoolean("enabled", true),
             days = days,
             // 允许为空：用户完全可以先建好计划、之后再补时间段
@@ -259,8 +259,6 @@ object Prefs {
             (0 until arr.length()).map { arr.optLong(it) }
         } ?: emptyList()
     )
-
-    const val DEFAULT_QUOTE = "此刻的专注，是未来在向你道谢。"
 
     /** 墙钟水位线的最小落盘间隔 */
     private const val WALL_WRITE_INTERVAL_MS = 60_000L

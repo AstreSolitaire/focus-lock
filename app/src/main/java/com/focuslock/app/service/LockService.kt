@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.ServiceCompat
+import com.focuslock.app.R
 import com.focuslock.app.data.Prefs
 import com.focuslock.app.logic.AlarmScheduler
 import com.focuslock.app.logic.LockController
@@ -64,7 +65,7 @@ class LockService : Service() {
         val s = LockRuntime.session
         val notif = Notifications.buildLockNotification(
             this,
-            s?.scheduleName ?: "专注中",
+            s?.scheduleName ?: getString(R.string.lock_default_schedule_name),
             LockRuntime.state.value.remainingMs,
             s?.strict == true
         )
@@ -120,11 +121,7 @@ class LockService : Service() {
         }
         if (warnedAccessibility) return
         warnedAccessibility = true
-        Notifications.notifyWarning(
-            this,
-            "锁机拦截已失效",
-            "「专注锁机」的无障碍服务被关闭了，白名单之外的应用暂时拦不住。请在系统设置中重新开启。"
-        )
+        Notifications.notifyAccessibilityLost(this)
     }
 
     private fun shutdown() {

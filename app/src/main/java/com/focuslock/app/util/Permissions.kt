@@ -13,6 +13,7 @@ import android.os.PowerManager
 import android.os.Process
 import android.provider.Settings
 import androidx.core.content.ContextCompat
+import com.focuslock.app.R
 import com.focuslock.app.service.AppWatchService
 import com.focuslock.app.service.FocusDeviceAdminReceiver
 
@@ -121,7 +122,7 @@ object PermissionIntents {
             )
             putExtra(
                 DevicePolicyManager.EXTRA_ADD_EXPLANATION,
-                "用于在锁机时段内阻止「专注锁机」被卸载或强行停止"
+                ctx.getString(R.string.device_admin_explain)
             )
         }
 

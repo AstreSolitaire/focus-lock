@@ -41,8 +41,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.focuslock.app.R
 import com.focuslock.app.data.Schedule
 import com.focuslock.app.data.TimeRange
 import com.focuslock.app.ui.AppViewModel
@@ -52,10 +56,11 @@ import com.focuslock.app.ui.components.SectionCard
 import com.focuslock.app.ui.components.SwitchRow
 import com.focuslock.app.ui.components.ThinDivider
 import com.focuslock.app.util.fmtDuration
-import com.focuslock.app.util.weekdayCn
+import com.focuslock.app.util.weekdayShort
 
 @Composable
 fun ScheduleEditScreen(vm: AppViewModel, scheduleId: String?) {
+    val ctx = LocalContext.current
     val existing = vm.scheduleById(scheduleId)
     var draft by remember(scheduleId) {
         mutableStateOf(existing ?: vm.newSchedule())
@@ -69,9 +74,9 @@ fun ScheduleEditScreen(vm: AppViewModel, scheduleId: String?) {
     // 保存前的校验：缺什么就明确告诉用户缺什么，不要点了没反应
     fun trySave() {
         saveError = when {
-            draft.name.isBlank() -> "请先给计划起个名字"
-            draft.days.isEmpty() -> "请至少选择一天生效"
-            draft.ranges.isEmpty() -> "请至少添加一个锁机时间段"
+            draft.name.isBlank() -> ctx.getString(R.string.edit_err_name)
+            draft.days.isEmpty() -> ctx.getString(R.string.edit_err_days)
+            draft.ranges.isEmpty() -> ctx.getString(R.string.edit_err_ranges)
             else -> null
         }
         if (saveError != null) return
@@ -80,12 +85,12 @@ fun ScheduleEditScreen(vm: AppViewModel, scheduleId: String?) {
     }
 
     ScreenScaffold(
-        title = if (isNew) "新建计划" else "编辑计划",
-        subtitle = "每周合计 ${fmtDuration(draft.weeklyMinutes * 60_000L)}",
+        title = if (isNew) stringResource(R.string.edit_new_title) else stringResource(R.string.edit_edit_title),
+        subtitle = stringResource(R.string.edit_weekly_total, fmtDuration(ctx, draft.weeklyMinutes * 60_000L)),
         onBack = { vm.pop() },
         actions = {
             TextButton(onClick = { trySave() }) {
-                Text("保存", fontWeight = FontWeight.SemiBold)
+                Text(stringResource(R.string.common_save), fontWeight = FontWeight.SemiBold)
             }
         }
     ) { padding ->
@@ -99,7 +104,7 @@ fun ScheduleEditScreen(vm: AppViewModel, scheduleId: String?) {
             Spacer(Modifier.height(4.dp))
 
             SectionCard {
-                CardTitle("计划名称")
+                CardTitle(stringResource(R.string.edit_name_label))
                 Spacer(Modifier.height(10.dp))
                 OutlinedTextField(
                     value = draft.name,
@@ -109,7 +114,7 @@ fun ScheduleEditScreen(vm: AppViewModel, scheduleId: String?) {
                     },
                     singleLine = true,
                     isError = saveError != null,
-                    placeholder = { Text("例如：早自习 / 晚自习 / 睡前断网") },
+                    placeholder = { Text(stringResource(R.string.edit_name_hint)) },
                     supportingText = if (saveError != null && draft.name.isBlank()) {
                         { Text(saveError!!) }
                     } else null,
@@ -120,9 +125,10 @@ fun ScheduleEditScreen(vm: AppViewModel, scheduleId: String?) {
             Spacer(Modifier.height(12.dp))
 
             SectionCard {
-                CardTitle("生效星期") {
+                CardTitle(stringResource(R.string.edit_days_label)) {
                     Text(
-                        if (draft.days.isEmpty()) "未选择" else "已选 ${draft.days.size} 天",
+                        if (draft.days.isEmpty()) stringResource(R.string.edit_days_none)
+                        else pluralStringResource(R.plurals.edit_days_n, draft.days.size, draft.days.size),
                         style = MaterialTheme.typography.labelMedium,
                         color = if (draft.days.isEmpty()) MaterialTheme.colorScheme.error
                         else MaterialTheme.colorScheme.onSurfaceVariant
@@ -139,18 +145,18 @@ fun ScheduleEditScreen(vm: AppViewModel, scheduleId: String?) {
                 )
                 Spacer(Modifier.height(10.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    QuickDays("每天") { draft = draft.copy(days = (1..7).toSet()) }
-                    QuickDays("工作日") { draft = draft.copy(days = setOf(1, 2, 3, 4, 5)) }
-                    QuickDays("周末") { draft = draft.copy(days = setOf(6, 7)) }
+                    QuickDays(stringResource(R.string.edit_days_every)) { draft = draft.copy(days = (1..7).toSet()) }
+                    QuickDays(stringResource(R.string.edit_days_weekdays)) { draft = draft.copy(days = setOf(1, 2, 3, 4, 5)) }
+                    QuickDays(stringResource(R.string.edit_days_weekend)) { draft = draft.copy(days = setOf(6, 7)) }
                 }
             }
 
             Spacer(Modifier.height(12.dp))
 
             SectionCard {
-                CardTitle("锁机时间段") {
+                CardTitle(stringResource(R.string.edit_ranges_label)) {
                     Text(
-                        "可添加多个",
+                        stringResource(R.string.edit_ranges_multi),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -159,7 +165,7 @@ fun ScheduleEditScreen(vm: AppViewModel, scheduleId: String?) {
 
                 if (draft.ranges.isEmpty()) {
                     Text(
-                        "还没有时间段，点下面的「添加时间段」设定",
+                        stringResource(R.string.edit_ranges_empty),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(vertical = 12.dp)
@@ -179,10 +185,10 @@ fun ScheduleEditScreen(vm: AppViewModel, scheduleId: String?) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column(Modifier.weight(1f)) {
-                            Text(range.label(), style = MaterialTheme.typography.bodyLarge)
+                            Text(range.label(ctx), style = MaterialTheme.typography.bodyLarge)
                             Text(
-                                fmtDuration(range.durationMinutes * 60_000L) +
-                                    if (range.crossesMidnight) " · 跨到第二天" else "",
+                                fmtDuration(ctx, range.durationMinutes * 60_000L) +
+                                    if (range.crossesMidnight) stringResource(R.string.edit_range_next_day) else "",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -190,7 +196,7 @@ fun ScheduleEditScreen(vm: AppViewModel, scheduleId: String?) {
                         if (draft.ranges.size > 1) {
                             Icon(
                                 Icons.Filled.Close,
-                                contentDescription = "移除",
+                                contentDescription = stringResource(R.string.common_remove),
                                 tint = MaterialTheme.colorScheme.outline,
                                 modifier = Modifier
                                     .size(20.dp)
@@ -210,10 +216,10 @@ fun ScheduleEditScreen(vm: AppViewModel, scheduleId: String?) {
                 }) {
                     Icon(Icons.Filled.Add, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(6.dp))
-                    Text("添加时间段")
+                    Text(stringResource(R.string.edit_add_range))
                 }
                 Text(
-                    "结束时间早于开始时间表示跨过午夜，例如 22:30 - 06:00",
+                    stringResource(R.string.edit_range_hint),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -222,17 +228,17 @@ fun ScheduleEditScreen(vm: AppViewModel, scheduleId: String?) {
             Spacer(Modifier.height(12.dp))
 
             SectionCard {
-                CardTitle("锁机行为")
+                CardTitle(stringResource(R.string.edit_behavior))
                 SwitchRow(
-                    title = "启用白名单",
-                    subtitle = "开启后，白名单里的应用在锁机期间仍可正常使用",
+                    title = stringResource(R.string.edit_use_whitelist),
+                    subtitle = stringResource(R.string.edit_use_whitelist_desc),
                     checked = draft.useWhitelist,
                     onCheckedChange = { draft = draft.copy(useWhitelist = it) }
                 )
                 ThinDivider()
                 SwitchRow(
-                    title = "严格模式",
-                    subtitle = "屏蔽系统设置与下拉通知栏，并阻止卸载，退出难度最大",
+                    title = stringResource(R.string.common_strict_mode),
+                    subtitle = stringResource(R.string.edit_strict_desc),
                     checked = draft.strict,
                     onCheckedChange = { draft = draft.copy(strict = it) }
                 )
@@ -272,7 +278,7 @@ fun ScheduleEditScreen(vm: AppViewModel, scheduleId: String?) {
                     .height(52.dp),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Text(if (isNew) "创建计划" else "保存修改")
+                Text(if (isNew) stringResource(R.string.edit_create) else stringResource(R.string.edit_save_changes))
             }
 
             if (!isNew) {
@@ -291,7 +297,7 @@ fun ScheduleEditScreen(vm: AppViewModel, scheduleId: String?) {
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(Modifier.width(6.dp))
-                    Text("删除这条计划", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.edit_delete), color = MaterialTheme.colorScheme.error)
                 }
             }
 
@@ -323,6 +329,7 @@ fun ScheduleEditScreen(vm: AppViewModel, scheduleId: String?) {
 
 @Composable
 private fun DayPicker(selected: Set<Int>, onToggle: (Int) -> Unit) {
+    val ctx = LocalContext.current
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -342,7 +349,7 @@ private fun DayPicker(selected: Set<Int>, onToggle: (Int) -> Unit) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    weekdayCn(d).removePrefix("周"),
+                    weekdayShort(ctx, d),
                     style = MaterialTheme.typography.labelLarge,
                     color = if (on) MaterialTheme.colorScheme.onPrimary
                     else MaterialTheme.colorScheme.onSurfaceVariant
@@ -364,6 +371,7 @@ private fun RangeDialog(
     onDismiss: () -> Unit,
     onConfirm: (TimeRange) -> Unit
 ) {
+    val ctx = LocalContext.current
     // 新建时间段时的初值是 00:00 - 00:00，由用户自己改
     val startMin = initial?.startMinute ?: 0
     val endMin = initial?.endMinute ?: 0
@@ -385,24 +393,27 @@ private fun RangeDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(if (initial == null) "添加时间段" else "修改时间段") },
+        title = { Text(if (initial == null) stringResource(R.string.range_title_new) else stringResource(R.string.range_title_edit)) },
         text = {
             Column(Modifier.verticalScroll(rememberScrollState())) {
-                Text("开始时间", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.range_start), style = MaterialTheme.typography.labelLarge)
                 Spacer(Modifier.height(6.dp))
                 TimeInput(state = startState)
 
                 Spacer(Modifier.height(16.dp))
-                Text("结束时间", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.range_end), style = MaterialTheme.typography.labelLarge)
                 Spacer(Modifier.height(6.dp))
                 TimeInput(state = endState)
 
                 Spacer(Modifier.height(14.dp))
                 Text(
                     when {
-                        preview.isWholeDay -> "起止相同 = 全天 24 小时锁机"
-                        else -> "共 ${fmtDuration(preview.durationMinutes * 60_000L)}" +
-                            if (preview.crossesMidnight) "，跨到第二天" else ""
+                        preview.isWholeDay -> stringResource(R.string.range_whole_day)
+                        else -> stringResource(
+                            if (preview.crossesMidnight) R.string.range_total_next_day
+                            else R.string.range_total,
+                            fmtDuration(ctx, preview.durationMinutes * 60_000L)
+                        )
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary
@@ -412,10 +423,10 @@ private fun RangeDialog(
         confirmButton = {
             TextButton(onClick = {
                 onConfirm(TimeRange(startNow, endNow).normalize())
-            }) { Text("确定") }
+            }) { Text(stringResource(R.string.common_confirm)) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("取消") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.common_cancel)) }
         }
     )
 }

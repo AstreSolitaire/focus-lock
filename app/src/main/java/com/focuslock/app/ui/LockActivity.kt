@@ -6,7 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.WindowManager
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.LaunchedEffect
@@ -26,7 +26,7 @@ import com.focuslock.app.ui.theme.FocusLockTheme
  * 退出条件只有一个：LockRuntime 里的会话被清空（倒计时走完，或用户通过
  * 紧急密码主动结束）。
  */
-class LockActivity : ComponentActivity() {
+class LockActivity : AppCompatActivity() {
 
     companion object {
         fun intent(ctx: Context): Intent =
@@ -83,7 +83,7 @@ class LockActivity : ComponentActivity() {
                     emergencyEnabled = Prefs.emergencyPassword.isNotBlank(),
                     onEmergencyUnlock = { pw ->
                         val ok = pw == Prefs.emergencyPassword && pw.isNotBlank()
-                        if (ok) LockController.forceEnd(this@LockActivity, "紧急解锁")
+                        if (ok) LockController.forceEnd(this@LockActivity, com.focuslock.app.R.string.reason_emergency)
                         ok
                     }
                 )

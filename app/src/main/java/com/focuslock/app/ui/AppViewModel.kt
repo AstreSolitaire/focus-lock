@@ -1,10 +1,14 @@
 package com.focuslock.app.ui
 
 import android.app.Application
+import androidx.annotation.StringRes
+import com.focuslock.app.R
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.AndroidViewModel
 import com.focuslock.app.data.AppCatalog
 import com.focuslock.app.data.AppEntry
@@ -24,11 +28,11 @@ sealed interface Screen {
     data object Permissions : Screen
 }
 
-enum class Tab(val label: String) {
-    Home("首页"),
-    Schedules("计划"),
-    Whitelist("白名单"),
-    Stats("数据")
+enum class Tab(@StringRes val labelRes: Int) {
+    Home(R.string.tab_home),
+    Schedules(R.string.tab_schedules),
+    Whitelist(R.string.tab_whitelist),
+    Stats(R.string.tab_stats)
 }
 
 class AppViewModel(app: Application) : AndroidViewModel(app) {
@@ -195,6 +199,25 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         emergencyPassword = pw
     }
 
+    /** 当前应用内语言：空串表示跟随系统 */
+    val appLanguage: String
+        get() = AppCompatDelegate.getApplicationLocales().toLanguageTags()
+
+    /** 切换应用内语言。传空串表示跟随系统。 */
+    fun updateAppLanguage(tag: String) {
+        val locales = if (tag.isBlank()) {
+            LocaleListCompat.getEmptyLocaleList()
+        } else {
+            LocaleListCompat.forLanguageTags(tag)
+        }
+        AppCompatDelegate.setApplicationLocales(locales)
+        languageRevision++
+    }
+
+    /** 语言切换后用来触发重组的小计数器 */
+    var languageRevision by mutableStateOf(0)
+        private set
+
     fun updateThemeMode(mode: Int) {
         Prefs.themeMode = mode
         themeMode = mode
@@ -238,7 +261,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         val now = System.currentTimeMillis()
         val window = com.focuslock.app.data.LockWindow(
             scheduleId = "manual",
-            scheduleName = "手动专注",
+            scheduleName = app.getString(R.string.lock_default_schedule_name),
             startAt = now,
             endAt = now + minutes * 60_000L,
             useWhitelist = true,
@@ -249,6 +272,6 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun endCurrentLock() {
-        LockController.forceEnd(getApplication(), "手动结束")
+        LockController.forceEnd(getApplication(), com.focuslock.app.R.string.reason_manual)
     }
 }

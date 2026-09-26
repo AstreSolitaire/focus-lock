@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.focuslock.app.R
 import com.focuslock.app.service.FocusDeviceAdminReceiver
 
 private const val TAG = "FocusAdmin"
@@ -28,7 +29,7 @@ object FocusAdmin {
             putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, cn(ctx))
             putExtra(
                 DevicePolicyManager.EXTRA_ADD_EXPLANATION,
-                "用于在锁机时段内阻止「专注锁机」被卸载或强行停止"
+                ctx.getString(R.string.device_admin_explain)
             )
         }
 

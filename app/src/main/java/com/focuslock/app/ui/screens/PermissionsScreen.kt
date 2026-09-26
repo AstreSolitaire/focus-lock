@@ -35,9 +35,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import com.focuslock.app.R
 import com.focuslock.app.ui.AppViewModel
 import com.focuslock.app.ui.components.ScreenScaffold
 import com.focuslock.app.ui.components.SectionCard
@@ -79,58 +82,56 @@ fun PermissionsScreen(vm: AppViewModel) {
         listOf(
             PermItem(
                 key = "accessibility",
-                title = "无障碍服务（应用监视）",
-                desc = "锁机期间识别当前打开的应用，白名单之外的一律弹回锁机界面。" +
-                    "这是拦截功能的核心，不开启则锁机只能靠自觉。",
+                title = ctx.getString(R.string.perm_accessibility_title),
+                desc = ctx.getString(R.string.perm_accessibility_desc),
                 required = true,
                 granted = PermissionChecks.accessibility(ctx),
                 onGo = { PermissionIntents.open(ctx, PermissionIntents.accessibility()) }
             ),
             PermItem(
                 key = "overlay",
-                title = "悬浮窗权限",
-                desc = "Android 10 起禁止应用在后台直接弹出界面。授予悬浮窗权限后，" +
-                    "锁机到点才能自动全屏弹出。不开的话到点只会有通知，需要手动点开。",
+                title = ctx.getString(R.string.perm_overlay_title),
+                desc = ctx.getString(R.string.perm_overlay_desc),
                 required = true,
                 granted = PermissionChecks.overlay(ctx),
                 onGo = { PermissionIntents.open(ctx, PermissionIntents.overlay(ctx)) }
             ),
             PermItem(
                 key = "notification",
-                title = "通知权限",
-                desc = "用于显示锁机剩余时间的常驻通知，以及到点提醒。",
+                title = ctx.getString(R.string.perm_notification_title),
+                desc = ctx.getString(R.string.perm_notification_desc),
                 required = true,
                 granted = PermissionChecks.notifications(ctx),
                 onGo = { PermissionIntents.open(ctx, PermissionIntents.appNotificationSettings(ctx)) }
             ),
             PermItem(
                 key = "alarm",
-                title = "精确闹钟",
-                desc = "保证锁机在整点准时开始、准时结束。未授权时系统会延迟几分钟，锁机会晚一点生效。",
+                title = ctx.getString(R.string.perm_alarm_title),
+                desc = ctx.getString(R.string.perm_alarm_desc),
                 required = true,
                 granted = PermissionChecks.exactAlarm(ctx),
                 onGo = { PermissionIntents.open(ctx, PermissionIntents.exactAlarm(ctx)) }
             ),
             PermItem(
                 key = "battery",
-                title = "忽略电池优化",
-                desc = "把本应用加入电池优化白名单，避免锁机服务在后台被系统冻结或杀掉。",
+                title = ctx.getString(R.string.perm_battery_title),
+                desc = ctx.getString(R.string.perm_battery_desc),
                 required = true,
                 granted = PermissionChecks.batteryUnrestricted(ctx),
                 onGo = { PermissionIntents.open(ctx, PermissionIntents.battery(ctx)) }
             ),
             PermItem(
                 key = "usage",
-                title = "使用情况访问（可选）",
-                desc = "在无障碍之外提供一层兜底判定。绝大多数情况下不开启也能正常工作。",
+                title = ctx.getString(R.string.perm_usage_title),
+                desc = ctx.getString(R.string.perm_usage_desc),
                 required = false,
                 granted = PermissionChecks.usageAccess(ctx),
                 onGo = { PermissionIntents.open(ctx, PermissionIntents.usageAccess()) }
             ),
             PermItem(
                 key = "admin",
-                title = "设备管理员（可选）",
-                desc = "锁机期间阻止卸载或强行停止本应用，让锁机更难被中途破坏。",
+                title = ctx.getString(R.string.perm_admin_title),
+                desc = ctx.getString(R.string.perm_admin_desc),
                 required = false,
                 granted = PermissionChecks.deviceAdmin(ctx),
                 onGo = { PermissionIntents.open(ctx, PermissionIntents.deviceAdmin(ctx)) }
@@ -143,8 +144,8 @@ fun PermissionsScreen(vm: AppViewModel) {
     val allGood = doneRequired == totalRequired
 
     ScreenScaffold(
-        title = "权限中心",
-        subtitle = "必需项 $doneRequired/$totalRequired 已完成",
+        title = stringResource(R.string.perm_title),
+        subtitle = stringResource(R.string.perm_subtitle, doneRequired, totalRequired),
         onBack = { vm.pop() }
     ) { padding ->
         Column(
@@ -176,14 +177,19 @@ fun PermissionsScreen(vm: AppViewModel) {
                     Spacer(Modifier.width(12.dp))
                     Column {
                         Text(
-                            if (allGood) "全部必需权限已就绪" else "还有 ${totalRequired - doneRequired} 项必需权限未完成",
+                            if (allGood) stringResource(R.string.perm_all_ok)
+                            else pluralStringResource(
+                                R.plurals.perm_still_missing,
+                                totalRequired - doneRequired,
+                                totalRequired - doneRequired
+                            ),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = if (allGood) Mint else Amber
                         )
                         Text(
-                            if (allGood) "到点会自动锁机，白名单之外的应用会被拦下"
-                            else "权限不全时，锁机可能不会自动弹出或不生效",
+                            if (allGood) stringResource(R.string.perm_all_ok_desc)
+                            else stringResource(R.string.perm_missing_desc),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -202,7 +208,8 @@ fun PermissionsScreen(vm: AppViewModel) {
                             modifier = Modifier.weight(1f)
                         )
                         StatusPill(
-                            text = if (item.granted) "已开启" else "未开启",
+                            text = if (item.granted) stringResource(R.string.common_enabled)
+                            else stringResource(R.string.common_disabled),
                             container = if (item.granted) Mint.copy(alpha = 0.15f)
                             else Color(0x1FEF4444),
                             content = if (item.granted) Mint else Color(0xFFEF4444)
@@ -221,7 +228,7 @@ fun PermissionsScreen(vm: AppViewModel) {
                     ) {
                         if (!item.required) {
                             Text(
-                                "可选",
+                                stringResource(R.string.common_optional),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -232,10 +239,10 @@ fun PermissionsScreen(vm: AppViewModel) {
                                 onClick = item.onGo,
                                 shape = RoundedCornerShape(50)
                             ) {
-                                Text("去开启")
+                                Text(stringResource(R.string.perm_go))
                             }
                         } else {
-                            TextButton(onClick = item.onGo) { Text("查看") }
+                            TextButton(onClick = item.onGo) { Text(stringResource(R.string.common_view)) }
                         }
                     }
                 }
@@ -244,8 +251,7 @@ fun PermissionsScreen(vm: AppViewModel) {
 
             Spacer(Modifier.height(6.dp))
             Text(
-                "提示：不同品牌的手机（小米 / 华为 / OPPO / vivo 等）在「无障碍」和「后台运行」" +
-                    "上还有各自的自启动开关，建议一并允许，锁机才会稳定。",
+                stringResource(R.string.perm_footer),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
