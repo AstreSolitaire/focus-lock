@@ -121,8 +121,21 @@
 </head>
 <body>
 <h1>专注锁机 FocusLock</h1>
-<p>一个自己掌控的安卓锁机 / 专注工具，把「番茄 Todo」里最硬核的那部分——<strong>按计划强制锁机</strong>——单独做到极致。</p>
-<p>面向的场景很具体：考研 / 备考期间，某些时间段必须把手机变成一块砖，只留下少数几个学习类应用可用。</p>
+<p><a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-5b4be0.svg" alt="License: MIT"></a>
+<a href="#%E4%BA%8C%E5%AE%89%E8%A3%85"><img src="https://img.shields.io/badge/Android-8.0%2B-3ddc84.svg" alt="Platform"></a>
+<a href="../../releases"><img src="https://img.shields.io/github/v/release/AstreSolitaire/focus-lock?color=5b4be0" alt="Release"></a></p>
+<p><strong>按星期几 + 时间段强制锁机的安卓专注工具：可选白名单，完全离线，没有网络权限。</strong></p>
+<p>An Android app locker for focused study — schedule-based whitelisting, reboot-proof
+timers, and <strong>no network permission at all</strong>. MIT licensed.</p>
+<blockquote>
+<p>面向的场景很具体：考研 / 备考期间，某些时间段必须把手机变成一块砖，
+只留下少数几个学习类应用可用。</p>
+</blockquote>
+<p align="center">
+  <img src="docs/screenshots/lock.png"   width="230" alt="锁机界面">
+  <img src="docs/screenshots/home.png"   width="230" alt="首页">
+  <img src="docs/screenshots/editor.png" width="230" alt="计划设置">
+</p><p><strong><a href="../../releases/latest">⬇ 下载安装包</a></strong> · <strong><a href="#%E5%9B%9B%E6%9D%83%E9%99%90%E9%83%BD%E6%98%AF%E5%B9%B2%E4%BB%80%E4%B9%88%E7%94%A8%E7%9A%84">权限说明</a></strong> · <strong><a href="#%E4%BA%94%E9%94%81%E6%9C%BA%E6%98%AF%E6%80%8E%E4%B9%88%E5%81%9A%E5%88%B0%E8%B5%96%E4%B8%8D%E6%8E%89%E7%9A%84">抗绕过设计</a></strong></p>
 <hr>
 <h2>一、它能做什么</h2>
 <div class="tw"><table><thead><tr><th align="left">能力</th><th align="left">说明</th></tr></thead><tbody><tr><td align="left">多条锁机计划</td><td align="left">想建几条建几条，每条独立启用 / 停用</td></tr><tr><td align="left">每天多个时间段</td><td align="left">一条计划里可以加任意多个起止时间，支持跨午夜（22:30 - 06:00）</td></tr><tr><td align="left">按星期生效</td><td align="left">每条计划自己选每周哪几天生效，另有一键「每天 / 工作日 / 周末」</td></tr><tr><td align="left">可选白名单</td><td align="left">白名单里的应用锁机期间照常使用；也可以关掉白名单，除系统必需应用外全拦</td></tr><tr><td align="left">锁屏直接启动白名单应用</td><td align="left">锁屏底部有「白名单应用（N）」按钮，点开就是可用的应用列表，点一下直接打开，按 Home 回到锁屏</td></tr><tr><td align="left">白名单覆盖全部应用</td><td align="left">可选范围是系统里除本应用外的<strong>所有</strong>已安装应用，含没有桌面图标的系统应用</td></tr><tr><td align="left">屏蔽 AI 助手规避</td><td align="left">长按电源键唤起小布（或其他 AI 助手）再让它替你开应用这条路被堵死</td></tr><tr><td align="left">普通 / 严格两种模式</td><td align="left">严格模式额外屏蔽系统设置与下拉通知栏，并阻止卸载</td></tr><tr><td align="left">自选锁屏图片</td><td align="left">从相册挑任意图片当锁机背景，自动裁切铺满</td></tr><tr><td align="left">锁屏显示时间</td><td align="left">大字时钟 + 进度环 + 剩余倒计时 + 预计解锁时间</td></tr><tr><td align="left">不影响开关机</td><td align="left">电源键完全不拦截，长按照样弹出电源菜单，正常关机 / 重启</td></tr><tr><td align="left">重启不会提前结束</td><td align="left">会话时长写在磁盘上，开机后自动恢复并接着走完剩余时间</td></tr><tr><td align="left">到点自动退出</td><td align="left">时间一到自动解锁并通知，不用手动干预</td></tr><tr><td align="left">记录锁机总时长</td><td align="left">今日 / 本周 / 本月 / 累计，近 7 天柱状图，每一次锁机明细</td></tr><tr><td align="left">权限集中申请</td><td align="left">权限中心逐项检测、逐项跳转，缺哪项一目了然</td></tr><tr><td align="left">精简 UI</td><td align="left">Material 3 + Compose，深浅色主题，底部四页签</td></tr></tbody></table></div><hr>

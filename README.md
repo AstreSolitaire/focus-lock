@@ -1,8 +1,24 @@
 # 专注锁机 FocusLock
 
-一个自己掌控的安卓锁机 / 专注工具，把「番茄 Todo」里最硬核的那部分——**按计划强制锁机**——单独做到极致。
+[![License: MIT](https://img.shields.io/badge/License-MIT-5b4be0.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/Android-8.0%2B-3ddc84.svg)](#二安装)
+[![Release](https://img.shields.io/github/v/release/AstreSolitaire/focus-lock?color=5b4be0)](../../releases)
 
-面向的场景很具体：考研 / 备考期间，某些时间段必须把手机变成一块砖，只留下少数几个学习类应用可用。
+**按星期几 + 时间段强制锁机的安卓专注工具：可选白名单，完全离线，没有网络权限。**
+
+An Android app locker for focused study — schedule-based whitelisting, reboot-proof
+timers, and **no network permission at all**. MIT licensed.
+
+> 面向的场景很具体：考研 / 备考期间，某些时间段必须把手机变成一块砖，
+> 只留下少数几个学习类应用可用。
+
+<p align="center">
+  <img src="docs/screenshots/lock.png"   width="230" alt="锁机界面">
+  <img src="docs/screenshots/home.png"   width="230" alt="首页">
+  <img src="docs/screenshots/editor.png" width="230" alt="计划设置">
+</p>
+
+**[⬇ 下载安装包](../../releases/latest)** · **[权限说明](#四权限都是干什么用的)** · **[抗绕过设计](#五锁机是怎么做到赖不掉的)**
 
 ---
 
