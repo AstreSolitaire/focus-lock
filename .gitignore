@@ -1,0 +1,29 @@
+# ---------------------------------------------------------------- 构建产物
+*.iml
+.gradle/
+.kotlin/
+build/
+/captures
+.externalNativeBuild
+.cxx
+/app/build/
+
+# ---------------------------------------------------------------- 本机配置
+# local.properties 里是本机的 Android SDK 路径，每台机器都不一样
+local.properties
+/.idea/
+.DS_Store
+
+# ---------------------------------------------------------------- 机密
+# 发布签名密钥：绝不入库。口令通过环境变量传入，见 app/build.gradle.kts
+/app/focuslock.keystore
+*.jks
+*.keystore
+
+# ---------------------------------------------------------------- 交付产物
+# APK 属于构建产物，请用 GitHub Releases 发布，不要塞进仓库
+# （调试包有 13MB，每次编译都会产生新的二进制 diff）
+/dist/*.apk
+dist/workspace.lnk
+*.lnk
+*.log

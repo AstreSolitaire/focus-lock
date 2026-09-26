@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>专注锁机 · 使用说明</title>
+<style>
+  :root {
+    --bg: #f6f6fb;
+    --fg: #1b1b22;
+    --muted: #5a5a6b;
+    --card: #ffffff;
+    --line: #e3e2ee;
+    --accent: #5b4be0;
+    --accent-soft: #e7e3ff;
+    --code-bg: #efeff7;
+    --quote-bg: #fff8e6;
+    --quote-line: #f59e0b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111116;
+      --fg: #e6e4ee;
+      --muted: #b9b8c6;
+      --card: #191920;
+      --line: #34343e;
+      --accent: #b9b0ff;
+      --accent-soft: #2a2450;
+      --code-bg: #26262f;
+      --quote-bg: #2c2410;
+      --quote-line: #d9a520;
+    }
+  }
+  * { box-sizing: border-box; -webkit-text-size-adjust: 100%; }
+  html { background: var(--bg); }
+  body {
+    margin: 0;
+    padding: 20px 16px calc(48px + env(safe-area-inset-bottom));
+    background: var(--bg);
+    color: var(--fg);
+    font: 17px/1.75 -apple-system, "HarmonyOS Sans SC", "MiSans", "Noto Sans CJK SC",
+          "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    word-wrap: break-word;
+    max-width: 820px;
+    margin-inline: auto;
+  }
+  h1 {
+    font-size: 1.65em;
+    line-height: 1.3;
+    margin: 0 0 .1em;
+    padding-bottom: .5em;
+    border-bottom: 3px solid var(--accent);
+  }
+  h1 + p { color: var(--muted); font-size: .95em; margin-top: .8em; }
+  h2 {
+    font-size: 1.28em;
+    margin: 2em 0 .7em;
+    padding-left: .55em;
+    border-left: 5px solid var(--accent);
+    line-height: 1.4;
+  }
+  h3 { font-size: 1.1em; margin: 1.6em 0 .5em; color: var(--accent); }
+  h4 { font-size: 1em; margin: 1.3em 0 .4em; }
+  p { margin: .75em 0; }
+  ul, ol { padding-left: 1.4em; margin: .7em 0; }
+  li { margin: .35em 0; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+  code {
+    background: var(--code-bg);
+    padding: .12em .38em;
+    border-radius: 5px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .88em;
+    word-break: break-all;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 14px;
+    border-radius: 12px;
+    overflow-x: auto;
+    font-size: .84em;
+    line-height: 1.6;
+    -webkit-overflow-scrolling: touch;
+  }
+  pre code { background: none; padding: 0; word-break: normal; font-size: 1em; }
+  blockquote {
+    margin: 1em 0;
+    padding: .7em .9em;
+    background: var(--quote-bg);
+    border-left: 4px solid var(--quote-line);
+    border-radius: 0 10px 10px 0;
+    color: var(--fg);
+    font-size: .95em;
+  }
+  blockquote p { margin: .3em 0; }
+  .tw {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 1em 0;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+  }
+  table { border-collapse: collapse; width: 100%; font-size: .9em; min-width: 340px; }
+  th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--accent-soft); color: var(--fg); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  hr { border: none; border-top: 1px solid var(--line); margin: 2.2em 0; }
+  strong { font-weight: 650; }
+  footer {
+    margin-top: 3em;
+    padding-top: 1.2em;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: .85em;
+    text-align: center;
+    line-height: 1.9;
+  }
+</style>
+</head>
+<body>
+<h1>专注锁机 FocusLock</h1>
+<p>一个自己掌控的安卓锁机 / 专注工具，把「番茄 Todo」里最硬核的那部分——<strong>按计划强制锁机</strong>——单独做到极致。</p>
+<p>面向的场景很具体：考研 / 备考期间，某些时间段必须把手机变成一块砖，只留下少数几个学习类应用可用。</p>
+<hr>
+<h2>一、它能做什么</h2>
+<div class="tw"><table><thead><tr><th align="left">能力</th><th align="left">说明</th></tr></thead><tbody><tr><td align="left">多条锁机计划</td><td align="left">想建几条建几条，每条独立启用 / 停用</td></tr><tr><td align="left">每天多个时间段</td><td align="left">一条计划里可以加任意多个起止时间，支持跨午夜（22:30 - 06:00）</td></tr><tr><td align="left">按星期生效</td><td align="left">每条计划自己选每周哪几天生效，另有一键「每天 / 工作日 / 周末」</td></tr><tr><td align="left">可选白名单</td><td align="left">白名单里的应用锁机期间照常使用；也可以关掉白名单，除系统必需应用外全拦</td></tr><tr><td align="left">锁屏直接启动白名单应用</td><td align="left">锁屏底部有「白名单应用（N）」按钮，点开就是可用的应用列表，点一下直接打开，按 Home 回到锁屏</td></tr><tr><td align="left">白名单覆盖全部应用</td><td align="left">可选范围是系统里除本应用外的<strong>所有</strong>已安装应用，含没有桌面图标的系统应用</td></tr><tr><td align="left">屏蔽 AI 助手规避</td><td align="left">长按电源键唤起小布（或其他 AI 助手）再让它替你开应用这条路被堵死</td></tr><tr><td align="left">普通 / 严格两种模式</td><td align="left">严格模式额外屏蔽系统设置与下拉通知栏，并阻止卸载</td></tr><tr><td align="left">自选锁屏图片</td><td align="left">从相册挑任意图片当锁机背景，自动裁切铺满</td></tr><tr><td align="left">锁屏显示时间</td><td align="left">大字时钟 + 进度环 + 剩余倒计时 + 预计解锁时间</td></tr><tr><td align="left">不影响开关机</td><td align="left">电源键完全不拦截，长按照样弹出电源菜单，正常关机 / 重启</td></tr><tr><td align="left">重启不会提前结束</td><td align="left">会话时长写在磁盘上，开机后自动恢复并接着走完剩余时间</td></tr><tr><td align="left">到点自动退出</td><td align="left">时间一到自动解锁并通知，不用手动干预</td></tr><tr><td align="left">记录锁机总时长</td><td align="left">今日 / 本周 / 本月 / 累计，近 7 天柱状图，每一次锁机明细</td></tr><tr><td align="left">权限集中申请</td><td align="left">权限中心逐项检测、逐项跳转，缺哪项一目了然</td></tr><tr><td align="left">精简 UI</td><td align="left">Material 3 + Compose，深浅色主题，底部四页签</td></tr></tbody></table></div><hr>
+<h2>二、安装</h2>
+<p>已经编译好的安装包在 <code>dist/</code> 目录：</p>
+<div class="tw"><table><thead><tr><th align="left">文件</th><th align="left">大小</th><th align="left">说明</th></tr></thead><tbody><tr><td align="left"><code>FocusLock-1.0.0-release.apk</code></td><td align="left">2.4 MB</td><td align="left"><strong>推荐安装这个</strong>。已开启 R8 压缩混淆，用项目内自带的证书签名</td></tr><tr><td align="left"><code>FocusLock-1.0.0-debug.apk</code></td><td align="left">13 MB</td><td align="left">调试包，含完整调试符号，排查问题时用</td></tr></tbody></table></div><p>用数据线或微信传到手机，点击安装。系统提示「未知来源应用」时允许即可。</p>
+<p><strong>首次打开请务必走完「权限中心」</strong>，尤其是前两项：</p>
+<ol>
+<li><strong>无障碍服务（应用监视）</strong> —— 拦截功能的核心，不开等于没锁</li>
+<li><strong>悬浮窗权限</strong> —— 安卓 10 以后禁止应用在后台自己弹界面，没有这个权限锁机到点不会自动全屏弹出</li>
+</ol>
+<hr>
+<h2>三、快速上手</h2>
+<ol>
+<li>打开 App → 底部「计划」→ 右下角 <code>+</code></li>
+<li>起个名字，比如「早自习」</li>
+<li>选生效的星期几</li>
+<li>添加时间段，比如 <code>07:00 - 08:30</code></li>
+<li>决定要不要开白名单、要不要严格模式</li>
+<li>保存 → 回首页，能看到「距下次锁机」的倒计时</li>
+</ol>
+<p>想先试一下效果，首页有「立即专注」的 25 / 45 / 60 / 90 分钟快捷按钮。</p>
+<p>白名单在底部「白名单」页配置：搜索、勾选即可，被选中的应用锁机期间能正常打开。</p>
+<hr>
+<h2>四、权限都是干什么用的</h2>
+<div class="tw"><table><thead><tr><th align="left">权限</th><th align="left">必需性</th><th align="left">用途</th></tr></thead><tbody><tr><td align="left">无障碍服务</td><td align="left"><strong>必需</strong></td><td align="left">读取「当前前台是哪个应用」，锁机期间把白名单外的应用弹回锁屏。<strong>不读取任何屏幕内容</strong>（配置里 <code>canRetrieveWindowContent=false</code>）</td></tr><tr><td align="left">悬浮窗</td><td align="left"><strong>必需</strong></td><td align="left">绕过安卓 10+ 的后台启动界面限制，锁机到点自动全屏弹出</td></tr><tr><td align="left">通知</td><td align="left"><strong>必需</strong></td><td align="left">常驻通知显示剩余时间；到点提醒</td></tr><tr><td align="left">精确闹钟</td><td align="left"><strong>必需</strong></td><td align="left">到点准时开始 / 准时结束</td></tr><tr><td align="left">忽略电池优化</td><td align="left"><strong>必需</strong></td><td align="left">防止锁机服务被系统在后台冻结</td></tr><tr><td align="left">使用情况访问</td><td align="left">可选</td><td align="left">无障碍之外的兜底判定</td></tr><tr><td align="left">设备管理员</td><td align="left">可选</td><td align="left">锁机期间阻止卸载 / 强行停止</td></tr><tr><td align="left">列出已安装应用</td><td align="left">自动</td><td align="left">用于生成白名单列表</td></tr></tbody></table></div><p><strong>这个应用完全离线</strong>，没有任何网络权限，不联网、不上传、不收集任何数据。所有判断都在本机完成。</p>
+<hr>
+<h2>五、锁机是怎么做到「赖不掉」的</h2>
+<p>这是整个项目最费心思的部分。想绕过的常规手段无非几种，逐条对应：</p>
+<h3>1. 把系统时间往后调，让倒计时瞬间走完</h3>
+<p>倒计时同时用两个时钟算，取<strong>较大值</strong>：</p>
+<ul>
+<li><strong>墙钟</strong>：<code>开始时刻 + 时长 - 现在几点</code></li>
+<li><strong>单调时钟</strong>：<code>时长 - (elapsedRealtime() - 开始时 elapsedRealtime())</code></li>
+</ul>
+<p><code>elapsedRealtime()</code> 只随真实时间流逝增长，改系统时间对它毫无影响。你把时间调到 2030 年，墙钟那一项直接变成负数，但单调时钟那一项纹丝不动，锁机照旧。</p>
+<h3>2. 把系统时间往前调，让「结束时刻」看起来还没到……或者反过来坑自己</h3>
+<p>如果墙钟剩余比单调时钟剩余多出 90 秒以上（说明时间被往回拨了），程序会<strong>以单调时钟为准重建基线</strong>，不会因为时间被拨回去而无谓地延长锁机。</p>
+<h3>3. 重启手机</h3>
+<p>锁机开始时就把<strong>总时长</strong>这个数字写进磁盘，同时记下当时的墙钟时刻和单调时刻。重启后 <code>elapsedRealtime()</code> 归零，程序检测到这一点，就用墙钟剩余量重建基线，接着走完剩下的时间。</p>
+<p>另外还会参考「历史观测到的最大墙钟时刻」来抵消「重启 + 把时间往回拨」这种组合拳（允许 1 小时误差，照顾跨时区飞行这类正常场景）。</p>
+<p>配合 <code>BOOT_COMPLETED</code> 广播，开机后锁机服务会被自动拉起，锁屏界面立刻回来。</p>
+<h3>4. 从最近任务划掉 / 让系统杀掉后台</h3>
+<ul>
+<li>前台服务 + <code>START_STICKY</code></li>
+<li>每分钟一次的 <code>AlarmManager</code> 心跳闹钟（<code>setExactAndAllowWhileIdle</code>），进程被杀后由它叫醒</li>
+<li><code>onTaskRemoved</code> 里立刻重排心跳，从最近任务划掉的下一秒就回来</li>
+</ul>
+<h3>4.5 长按电源键唤起 AI 助手，让助手替你打开应用</h3>
+<p>一加 / OPPO 的「小布助手」可以直接被电源键唤起，再让它打开微信或系统设置——
+这是本地锁机软件最容易被绕过的一条路，而且电源键本身绝不能拦（拦了就没法关机重启）。</p>
+<p>做法是：<strong>电源键不拦，但把助手类应用全部列入「无论如何都拦」名单</strong>，并且这个名单
+的优先级高于电源键宽限期。已经在真机上验证：</p>
+<pre><code>AppWatchService: 拦截（不可放行）com.heytap.speechassist
+</code></pre>
+<p>被列入该名单的还有各家桌面（否则按 Home 就跑了）、Google 助手。白名单里也能选到
+它们，但界面上会明确标注「锁机时仍拦住」，避免用户以为设了没用。</p>
+<h3>4.6 本应用自己的主界面跑到前台</h3>
+<p>修这条之前有个真实漏洞：无障碍服务对自己整个包名一律放行，于是「从最近任务切回
+主界面」就能在锁机期间正常使用手机。现在的规则是——<strong>只有锁屏界面能待在前台</strong>，
+跑上来的是主界面就立刻顶回去：</p>
+<pre><code>AppWatchService: 本应用的非锁屏界面出现在前台（com.focuslock.app.ui.MainActivity），顶回锁屏
+</code></pre>
+<p>注意只对「本应用自己的 Activity 类名」下手：锁屏上的白名单对话框是独立窗口
+（className 是 <code>android.widget.FrameLayout</code> 之类），必须放行，否则弹窗会把自己顶掉。</p>
+<h3>4.7 从锁屏启动白名单应用时被系统确认框掐断</h3>
+<p>点白名单应用后，ColorOS 会先弹一个自己的「确认启动 / 授予权限」框。它不属于白名单，
+照拦的话应用永远打不开——实测日志里能看到：</p>
+<pre><code>START u0 {... pkg=com.microsoft.emmx ...} result code=0     ← 应用确实被启动了
+AppWatchService: 拦截 com.oplus.securitypermission           ← 但系统确认框被我拦掉
+</code></pre>
+<p>修法是两处：系统的权限/安装/确认框加入常驻放行名单；另外从锁屏点开应用时开一个
+10 秒的<strong>发射宽限期</strong>，让系统跟着弹出来的框能正常显示。</p>
+<h3>5. 锁机期间把无障碍服务关掉</h3>
+<p>严格模式下「系统设置」被屏蔽，进不去那个开关页面。真要绕过去，只能去系统设置里先关掉无障碍——但锁机服务每 15 秒自检一次，一旦发现无障碍断了会立刻发通知提醒。</p>
+<h3>6. 卸载 App</h3>
+<p>需要设备管理员权限（权限中心里可选开启）。开启后锁机期间 <code>setUninstallBlocked</code> 生效，卸载入口会被系统拦下。撤销设备管理员本身要走系统设置，同样被严格模式挡住。</p>
+<h3>7. 到点不结束（反向耍赖）</h3>
+<p>结束时刻用 <code>setAlarmClock</code> 下发，可以穿透 Doze、时间精确，到点必然触发。</p>
+<h3>8. 到点不开始 / 开始得晚</h3>
+<p><strong>这是在一加 Ace 6（ColorOS 16 / Android 16）实测踩出来的坑，值得单独说。</strong></p>
+<p>一开始开始/结束都用 <code>setExactAndAllowWhileIdle</code>。实测发现结束是准点的，<strong>开始却晚了 70 秒</strong>。
+翻 <code>dumpsys alarm</code> 看到：</p>
+<pre><code>Alarm{... com.focuslock.app} windowLength 69111     ← 开始闹钟：带 69 秒窗口
+Alarm{... com.focuslock.app} windowLength 0         ← 结束闹钟：精确
+</code></pre>
+<p>原因是 ColorOS 把 <code>setExactAndAllowWhileIdle</code> 降级成了<strong>带窗口的批处理闹钟</strong>，
+<code>WINDOW_HEURISTIC</code> 的窗口大小跟「距离目标还有多久」相关——离得越远窗口越大，
+排到 24 小时之后直接被封顶成 1 小时。而 <code>setAlarmClock</code> 下发的「闹钟式」条目
+系统不做批处理，所以是准的。</p>
+<p>修法：<strong>开始和结束都改用 <code>setAlarmClock</code></strong>。代价是状态栏会出现一个闹钟图标
+（系统把下一次锁机当成用户闹钟展示）。为了不让这个图标整天挂着，只在
+「距开始不足 30 分钟」时才升级成闹钟式下发，更早的时候先排一个「预备闹钟」，
+到提前 30 分钟那一刻再自我升级。改完后 <code>windowLength 0</code>，实测准点。</p>
+<blockquote>
+<p>如果你在别的机型上发现锁机仍然不准时，大概率是同一个原因：
+用 <code>adb shell dumpsys alarm | grep -A2 focuslock</code> 看 <code>windowLength</code>，
+是 0 才代表精确。</p>
+</blockquote>
+<h3>顺带一提：电源键和开关机</h3>
+<p><strong>电源键从不拦截。</strong> 无障碍服务只记录电源键按下的时刻，并在此后 8 秒内暂停一切拦截——这段时间正好够系统电源菜单弹出来。所以长按电源键关机和重启是完全正常的，锁机只是「重启后还会回来」而已。</p>
+<hr>
+<h2>五之二、在一加 Ace 6 上的实测记录</h2>
+<p>以下都是在真机（一加 Ace 6 / ColorOS 16 / Android 16 / API 36）上跑出来的，不是推测：</p>
+<div class="tw"><table><thead><tr><th align="left">验证项</th><th align="left">结果</th></tr></thead><tbody><tr><td align="left">安装、冷启动</td><td align="left">通过，283 ms，无崩溃</td></tr><tr><td align="left">首页 / 计划列表 / 计划编辑 / 权限中心 / 白名单 渲染</td><td align="left">通过</td></tr><tr><td align="left">权限状态检测（无障碍、悬浮窗、精确闹钟、电池优化）</td><td align="left">通过，与实际状态一致</td></tr><tr><td align="left">立即专注（手动锁机）</td><td align="left">通过，锁屏弹出、时钟与倒计时正常走动</td></tr><tr><td align="left">拦截 Home 键</td><td align="left">通过，锁屏保持在前台</td></tr><tr><td align="left">拦截白名单外应用（微信、浏览器）</td><td align="left">通过，日志 <code>AppWatchService: 拦截 com.heytap.browser</code></td></tr><tr><td align="left">前台服务 + 常驻通知 + 通知渠道</td><td align="left">通过</td></tr><tr><td align="left">计划保存（星期多选、时间段、预览时长）</td><td align="left">通过</td></tr><tr><td align="left">到点自动开始</td><td align="left">通过（修复 <code>setAlarmClock</code> 后精确）</td></tr><tr><td align="left">到点自动退出</td><td align="left">通过，准点</td></tr><tr><td align="left">无障碍服务绑定</td><td align="left">通过（<code>dumpsys accessibility</code> 可见已绑定）</td></tr><tr><td align="left">锁屏「白名单应用」按钮 → 打开 Edge</td><td align="left">通过，前台变为 <code>com.microsoft.emmx</code></td></tr><tr><td align="left">打开白名单应用后按 Home</td><td align="left">通过，弹回锁屏</td></tr><tr><td align="left">强制把主界面拉到前台（模拟绕过）</td><td align="left">通过，被顶回锁屏</td></tr><tr><td align="left">强行唤起小布助手 <code>com.heytap.speechassist</code></td><td align="left">通过，被拦下</td></tr><tr><td align="left">白名单列出全部应用（512 个，含系统应用）</td><td align="left">通过</td></tr><tr><td align="left">新建计划默认无时间段、时间选择器初值 00:00-00:00</td><td align="left">通过</td></tr></tbody></table></div><p>尚未在真机上验证的部分：重启后恢复、自选锁屏背景图、紧急解锁密码、
+严格模式下屏蔽系统设置与通知栏。这几项的逻辑都由单元测试覆盖，但没有真机跑过。</p>
+<h3>一个已知的体验短板</h3>
+<p>非严格模式给「提前结束锁机」留的出口在<strong>常驻通知</strong>里。但系统要求通知展开后才显示
+按钮（<code>setShowActionsInCompactView</code> 是 <code>MediaStyle</code> 独有的 API，普通通知用不了），
+在一加 Ace 6 上试了多种手势都没能把按钮展开出来 —— 也就是说这个出口实际上不太好用。</p>
+<p>严格模式本来就不该有出口，所以影响有限；但如果你打算用非严格模式的定时计划，
+请把这个当成「基本退不出来」来安排。真锁死了的兜底手段：数据线连电脑执行
+<code>adb uninstall com.focuslock.app</code>。</p>
+<hr>
+<h2>六、已知局限（写在明面上）</h2>
+<ol>
+<li><strong>关机期间的时间算不算锁机</strong> —— 算。手机都关了，本来也用不了。重启后按墙钟恢复剩余时间。</li>
+<li><strong>重启 + 改时间</strong> 这一组合，在纯本地、不联网的前提下无法百分之百识别。上面提到的「最大墙钟时刻」水位线能挡住往回拨，但如果把时间往后调再重启，程序只能相信系统时间。要彻底解决需要服务端对时，这超出了「一个本地 App」的范围。</li>
+<li><strong>不同品牌手机的后台策略</strong> —— 小米 / 华为 / OPPO / vivo 等还有自家的「自启动」「后台冻结」开关，需要在系统设置里额外允许，锁机才会稳定。权限中心底部有提示。</li>
+<li><strong>紧急解锁密码忘了就没了</strong> —— 密码存在本机，没有找回途径，只能等锁机结束。留空表示不提供任何中途退出方式。</li>
+<li><strong>出厂恢复</strong> —— 谁都挡不住恢复出厂设置，这是物理层面的后门，任何本地锁机软件都一样。</li>
+</ol>
+<hr>
+<h2>七、自己编译</h2>
+<h3>环境</h3>
+<ul>
+<li>JDK 17</li>
+<li>Android SDK（platform 34 + build-tools 34.0.0）</li>
+<li>Gradle 8.7</li>
+</ul>
+<p>本机 <code>local.properties</code> 里的 SDK 路径写成你自己的：</p>
+<pre><code class="language-properties">sdk.dir=D:\\Android\\sdk
+</code></pre>
+<h3>命令</h3>
+<pre><code class="language-bash"># 调试包（可直接安装，用默认调试签名）
+./gradlew assembleDebug
+
+# 发布包（用项目里的 focuslock.keystore 签名）
+./gradlew assembleRelease
+
+# 跑核心逻辑的单元测试（24 个用例）
+./gradlew testDebugUnitTest
+</code></pre>
+<h3>三个已经踩过的坑</h3>
+<p><strong>1. Gradle 下载源</strong></p>
+<p><code>gradle/wrapper/gradle-wrapper.properties</code> 里的地址指向腾讯云镜像
+（<code>https://mirrors.cloud.tencent.com/gradle/gradle-8.7-bin.zip</code>），
+因为 Gradle 官方源会重定向到 GitHub，国内直连经常超时。能直连的话可以换回
+<code>https://services.gradle.org/distributions/gradle-8.7-bin.zip</code>。</p>
+<p><strong>2. 不要在 <code>org.gradle.jvmargs</code> 里加 <code>-Dfile.encoding=UTF-8</code></strong></p>
+<p>中文 Windows 的系统 ANSI 代码页是 GBK。Gradle 在 UTF-8 下写出的测试 worker
+参数文件会被 JVM 按 GBK 解析，路径乱码后直接报
+<code>ClassNotFoundException: worker.gradle.process.internal.worker.GradleWorkerMain</code>。
+Kotlin 源码本来就默认按 UTF-8 编译，不需要这个开关。<code>gradle.properties</code> 里已经写了注释。</p>
+<p><strong>3. 工程路径含中文时单元测试跑不起来</strong></p>
+<p><code>assembleDebug</code> / <code>assembleRelease</code> 在中文路径下没问题（<code>android.overridePathCheck=true</code>
+已经打开），但 <code>testDebugUnitTest</code> 的 worker 进程仍然会因为路径编码崩掉。
+如果单元测试报 <code>GradleWorkerMain</code> 找不到，把工程复制到纯英文路径再跑即可：</p>
+<pre><code class="language-bash">cp -r focus-lock /d/fl &amp;&amp; cd /d/fl &amp;&amp; ./gradlew testDebugUnitTest
+</code></pre>
+<h3>发布签名的密钥</h3>
+<p>项目自带一个测试用密钥 <code>app/focuslock.keystore</code>，口令全部是 <code>focuslock</code>。
+自己长期使用建议换成自己的密钥：</p>
+<pre><code class="language-bash">keytool -genkeypair -v -keystore my.keystore -alias mykey \
+  -keyalg RSA -keysize 2048 -validity 10950
+</code></pre>
+<p>然后改 <code>app/build.gradle.kts</code> 里的 <code>signingConfigs</code>。</p>
+<hr>
+<h2>八、代码结构</h2>
+<pre><code>app/src/main/java/com/focuslock/app/
+├── FocusLockApp.kt              每个进程启动都要跑的初始化 + 状态恢复
+├── data/
+│   ├── Models.kt                TimeRange / Schedule / LockWindow / LockSession
+│   ├── Prefs.kt                 全部持久化状态（SharedPreferences + JSON）
+│   ├── StatsStore.kt            锁机时长统计
+│   └── AppCatalog.kt            已安装应用列表（白名单数据源）
+├── logic/
+│   ├── ScheduleEvaluator.kt     计划 → 具体锁机区间；跨午夜、多计划重叠合并
+│   ├── LockController.kt        ★ 总调度 + 双时钟抗篡改倒计时
+│   ├── LockRuntime.kt           进程内锁机状态（给无障碍服务快速读取）
+│   ├── AlarmScheduler.kt        开始 / 结束 / 心跳三类闹钟
+│   ├── ServiceLauncher.kt       前台服务启停 + 震动
+│   └── FocusAdmin.kt            设备管理员能力
+├── service/
+│   ├── LockService.kt           锁机常驻前台服务（每秒 tick）
+│   ├── AppWatchService.kt       ★ 无障碍服务：拦截白名单外的前台应用
+│   ├── AlarmReceiver.kt         闹钟统一入口
+│   ├── BootReceiver.kt          开机 / 改时间后的恢复
+│   └── FocusDeviceAdminReceiver.kt
+├── ui/
+│   ├── MainActivity.kt          底部四页签 + 覆盖页导航
+│   ├── AppViewModel.kt          全部界面状态
+│   ├── LockActivity.kt          锁机界面（全屏、置顶、吞返回键）
+│   ├── LockScreen.kt            锁屏视觉：背景图 / 进度环 / 时钟 / 倒计时
+│   ├── screens/                 首页 / 计划列表 / 计划编辑 / 白名单 / 数据 / 设置 / 权限中心
+│   ├── components/Common.kt     复用组件
+│   └── theme/Theme.kt           配色与字体
+└── util/
+    ├── Fmt.kt                   时间格式化
+    ├── Notifications.kt         通知渠道与各类通知
+    └── Permissions.kt           权限检测与跳转
+
+app/src/main/res/xml/
+├── accessibility_service_config.xml   无障碍服务声明
+└── device_admin.xml                   设备管理员策略声明
+
+app/src/test/java/com/focuslock/app/
+├── CountdownTest.kt             7 个用例：双时钟倒计时在各种改时间/重启场景下的行为
+└── ScheduleEvaluatorTest.kt     17 个用例：跨午夜、多计划重叠、已完成去重、周合计
+</code></pre>
+<h3>测试覆盖了什么</h3>
+<p><code>CountdownTest</code> 就是「重启 / 改时间都不能让锁机提前结束」这句话的可执行版本：</p>
+<ul>
+<li>正常流逝 → 按墙钟给出剩余</li>
+<li>把系统时间往后拨 3 小时 → 仍按单调钟算，还剩 110 分钟</li>
+<li>把系统时间往回拨 5 小时 → 触发基线重建，按单调钟重算，不会把锁机拖长</li>
+<li>30 秒的正常漂移 → 不误判</li>
+<li>重启（单调钟归零）→ 按墙钟恢复剩余时间</li>
+<li>重启 + 回拨 10 小时 → 被墙钟水位线兜住</li>
+<li>时间走完 → 返回 0 而不是负数</li>
+</ul>
+<p><code>ScheduleEvaluatorTest</code> 覆盖时段换算：跨午夜落次日、停用计划不生效、
+多计划重叠时结束时间取最晚且严格模式取或、已完成的区间被排除、
+下一时段查找、今天的时间轴、周合计分钟数。</p>
+<hr>
+<h2>九、安装包</h2>
+<p>仓库里<strong>不含 APK</strong>（构建产物不进版本库）。安装包发布在
+<a href="../../releases">Releases</a> 页面：下载 <code>FocusLock-1.0.0-release.apk</code> 传到手机上安装即可。</p>
+<p>如果你是自己 clone 下来编译，<code>./gradlew assembleRelease</code> 的产物在
+<code>app/build/outputs/apk/release/</code>。仓库里没有附带签名密钥，
+所以默认会用调试签名——自己长期使用请换成自己的密钥（见上一节）。</p>
+<h2>十、技术栈</h2>
+<ul>
+<li>Kotlin 2.0.20 / Jetpack Compose（BOM 2024.09.02）/ Material 3</li>
+<li>minSdk 26（Android 8.0），targetSdk 34</li>
+<li>零网络依赖，全部数据在本机 SharedPreferences</li>
+<li>主要依赖：<code>androidx.core</code>、<code>activity-compose</code>、<code>lifecycle-*</code>、<code>compose ui/material3</code>、<code>coil-compose</code>（加载锁屏背景图）</li>
+</ul>
+<h2>十一、许可</h2>
+<p>MIT License，见 <a href="LICENSE">LICENSE</a>。</p>
+<p>这个项目是为了自己考研备考好用才写的，欢迎随意取用、修改、二次分发。
+唯一的请求是：<strong>别拿它去做伤害使用者的事</strong>——锁机软件天然带着强制属性，
+用它把别人的手机锁死不是这个项目存在的目的。</p>
+
+<footer>
+  专注锁机 FocusLock v1.0.0 · 完全离线，不联网、不上传任何数据<br>
+  本文档由 README.md 生成，用手机浏览器打开即可阅读
+</footer>
+</body>
+</html>

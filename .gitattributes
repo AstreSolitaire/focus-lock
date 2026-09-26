@@ -1,0 +1,20 @@
+# 统一换行符，避免 Windows / macOS / Linux 之间来回改 diff
+* text=auto eol=lf
+
+# Windows 批处理必须是 CRLF，否则会挂
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# 二进制文件不要做换行符转换
+*.jar   binary
+*.apk   binary
+*.aab   binary
+*.keystore binary
+*.jks   binary
+*.png   binary
+*.jpg   binary
+*.ttf   binary
+*.pdf   binary
+
+# 语言统计时把生成物排除掉
+dist/* linguist-documentation

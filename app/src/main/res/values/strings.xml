@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">专注锁机</string>
+    <string name="accessibility_label">专注锁机 · 应用监视</string>
+    <string name="accessibility_summary">锁机时段内拦截白名单之外的应用</string>
+    <string name="accessibility_desc">用于在锁机时段内识别当前正在使用的应用。若该应用不在白名单中，本服务会立即把锁机界面重新显示到最前面。服务不读取、不上传任何屏幕内容，所有判断都在本机完成。</string>
+    <string name="device_admin_desc">锁机时段内防止「专注锁机」被卸载或强行停止。</string>
+    <string name="lock_channel_name">锁机状态</string>
+    <string name="lock_channel_desc">锁机进行中显示剩余时间</string>
+</resources>
