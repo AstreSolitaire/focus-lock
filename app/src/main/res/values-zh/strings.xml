@@ -272,6 +272,7 @@
     <string name="notif_fallback_title">专注中</string>
     <string name="notif_fallback_text">点按返回锁机界面</string>
     <string name="notif_accessibility_lost_title">锁机拦截已失效</string>
+    <string name="notif_accessibility_crashed_text">系统设置里可能仍显示「已开启」，但服务已被系统标记失效、不会自动恢复，拦截实际上已经停止。请到「设置 → 无障碍」把它关掉再打开一次。</string>
     <string name="notif_accessibility_lost_text">「专注锁机」的无障碍服务被关闭了，白名单之外的应用暂时拦不住。请在系统设置中重新开启。</string>
 
     <!-- ==================== 结束原因 ==================== -->

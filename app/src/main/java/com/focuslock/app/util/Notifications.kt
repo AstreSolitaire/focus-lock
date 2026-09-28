@@ -146,8 +146,9 @@ object Notifications {
         runCatching { NotificationManagerCompat.from(ctx).notify(ID_ALERT, n) }
     }
 
-    fun notifyWarning(ctx: Context, title: String, text: String) {
-        if (!hasPermission(ctx)) return
+    /** @return 是否真的发出去了。没权限时返回 false，调用方不应据此认为已经提醒过用户。 */
+    fun notifyWarning(ctx: Context, title: String, text: String): Boolean {
+        if (!hasPermission(ctx)) return false
         val n = NotificationCompat.Builder(ctx, CH_ALERT)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
@@ -157,16 +158,24 @@ object Notifications {
             .setContentIntent(mainPending(ctx))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
-        runCatching { NotificationManagerCompat.from(ctx).notify(ID_ALERT, n) }
+        return runCatching {
+            NotificationManagerCompat.from(ctx).notify(ID_ALERT, n)
+            true
+        }.getOrDefault(false)
     }
 
-    fun notifyAccessibilityLost(ctx: Context) {
-        notifyWarning(
+    /**
+     * @param crashedWhileEnabled true 表示「设置里显示已开启，但服务已经被系统标记失效」
+     *   —— 这种情况用户自己看不出来，文案必须说清楚怎么修。
+     */
+    fun notifyAccessibilityLost(ctx: Context, crashedWhileEnabled: Boolean): Boolean = notifyWarning(
             ctx,
             ctx.getString(R.string.notif_accessibility_lost_title),
-            ctx.getString(R.string.notif_accessibility_lost_text)
+        ctx.getString(
+            if (crashedWhileEnabled) R.string.notif_accessibility_crashed_text
+            else R.string.notif_accessibility_lost_text
         )
-    }
+    )
 
     fun cancelLock(ctx: Context) {
         runCatching { NotificationManagerCompat.from(ctx).cancel(ID_LOCK) }

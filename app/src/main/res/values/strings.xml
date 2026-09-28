@@ -277,6 +277,7 @@
     <string name="notif_fallback_title">Focusing</string>
     <string name="notif_fallback_text">Tap to return to the lock screen</string>
     <string name="notif_accessibility_lost_title">Lock enforcement stopped</string>
+    <string name="notif_accessibility_crashed_text">Accessibility still shows as enabled in Settings, but the system has marked the service as failed and will not rebind it. Lock enforcement has stopped. Turn the service off and on again in Settings \u2192 Accessibility.</string>
     <string name="notif_accessibility_lost_text">The accessibility service for FocusLock was turned off, so apps outside the whitelist can no longer be blocked. Please re-enable it in system settings.</string>
 
     <!-- ==================== 结束原因 ==================== -->

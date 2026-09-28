@@ -146,16 +146,30 @@ class LockService : Service() {
         }
     }
 
-    /** 严格模式下如果无障碍被关掉，锁机就形同虚设，提醒用户去打开 */
+    /**
+     * 严格模式下无障碍一旦失效，锁机就形同虚设，必须提醒用户。
+     *
+     * 关键：**不能只看系统设置里的那个开关。**
+     * App 更新、或进程被系统杀掉之后，AccessibilityManagerService 会把服务标记成
+     * Crashed 并且**不再自动重绑**，而「设置 → 无障碍」里依旧显示「已开启」。
+     * 结果就是拦截已经停了，用户在界面上完全看不出来 —— 只能靠服务自己有没有
+     * 真的连上来判断（同一个进程，用静态标志最直接）。
+     */
     private fun checkAccessibility(strict: Boolean) {
         if (!strict) return
-        if (AccessibilityUtil.isEnabled(this)) {
+        val enabledInSettings = AccessibilityUtil.isEnabled(this)
+        val connected = AppWatchService.running
+        if (enabledInSettings && connected) {
             warnedAccessibility = false
             return
         }
         if (warnedAccessibility) return
-        warnedAccessibility = true
-        Notifications.notifyAccessibilityLost(this)
+        Log.w(TAG, "无障碍失效：设置里开启=$enabledInSettings，实际连上=$connected")
+        // 只有通知真的发出去了才记「已提醒」，否则没权限时会永远哑火
+        warnedAccessibility = Notifications.notifyAccessibilityLost(
+            this,
+            crashedWhileEnabled = enabledInSettings && !connected
+        )
     }
 
     private fun shutdown() {
